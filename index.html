@@ -130,7 +130,7 @@ const DEFAULT_KEY="rf_live_0e54a58aa9b72f32bab8c72d7d44db4e2048d58a33a28096";
 function ls(k,v){try{if(v===undefined)return localStorage.getItem(k);localStorage.setItem(k,v)}catch(e){return null}}
 let apiEndpoint=ls("jeff_ep")||DEFAULT_ENDPOINT;
 let apiKey=ls("jeff_key")||DEFAULT_KEY;
-let proxyUrl=ls("jeff_proxy")||"";
+let proxyUrl=ls("jeff_proxy")||"https://jeff-proxy.cobacoba12392apcb.workers.dev/";
 let services=[],platform="all",picked=null,historyData=[];
 try{historyData=JSON.parse(ls("jeff_hist")||"[]")}catch(e){}
 
