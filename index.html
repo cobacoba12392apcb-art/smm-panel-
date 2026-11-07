@@ -60,7 +60,7 @@ small{color:#aaa}
 <button onclick="tab('order',this)">Order</button>
 <button onclick="tab('history',this)">Riwayat</button>
 <button onclick="tab('settings',this)">API Settings</button>
-<button onclick="tab('payment',this)">QRIS</button>
+<button onclick="tab('payment',this)">Deposit</button>
 </nav>
 
 <section id="dashboard" class="active">
@@ -115,11 +115,23 @@ small{color:#aaa}
 </section>
 
 <section id="payment">
-<h2>QRIS Payment</h2>
+<h2>Deposit Saldo</h2>
 <div class="card">
-<img src="https://files.catbox.moe/lhkccu.jpeg" style="width:100%;max-width:280px;display:block;margin:auto" alt="QRIS">
-<p class="notice" style="margin-top:14px">Gambar QRIS saja. Verifikasi pembayaran otomatis memerlukan backend dan webhook payment gateway.</p>
+<label>Nominal deposit (min Rp10.000)</label>
+<input id="depAmount" type="number" min="10000" step="1000" placeholder="contoh: 50000">
+<label>Nama / kontak kamu</label>
+<input id="depName" placeholder="nama atau username">
+<button class="primary" onclick="makeDeposit()">Buat Tagihan</button>
 </div>
+<div class="card" id="depBox" style="display:none;text-align:center">
+<small>Transfer TEPAT sesuai total ini</small>
+<h1 id="depTotal" style="margin:6px 0;color:#c084fc"></h1>
+<small id="depCode"></small>
+<img id="qrisImg" src="https://files.catbox.moe/lhkccu.jpeg" style="width:100%;max-width:280px;display:block;margin:14px auto;background:#fff;border-radius:10px" alt="QRIS">
+<button class="primary" onclick="confirmWA()">Sudah Bayar → Konfirmasi via WhatsApp</button>
+<p class="notice" style="margin-top:14px;text-align:left">Kode unik 3 digit di belakang nominal dipakai admin untuk mencocokkan pembayaran. Setelah konfirmasi, saldo ditambah manual oleh admin.</p>
+</div>
+<div class="card"><h3 style="margin-top:0">Riwayat Deposit</h3><div id="depList">Belum ada.</div></div>
 </section>
 </main>
 
@@ -177,6 +189,7 @@ function tab(id,button){
  if(button)button.classList.add("active");
  if(id==="services"&&!services.length)getServices();
  if(id==="history")renderHistory();
+ if(id==="payment")renderDeposits();
 }
 
 /* ---------- Pengaturan ---------- */
@@ -343,6 +356,42 @@ async function refreshStatus(){
   ls("jeff_hist",JSON.stringify(historyData));
   renderHistory();
  }catch(e){alert("Gagal cek status: "+e.message)}
+}
+
+/* ---------- Deposit manual (QRIS) ---------- */
+const ADMIN_WA="628xxxxxxxxxx"; // GANTI: nomor WhatsApp admin, format 62..., tanpa + atau spasi
+let deposits=[];
+try{deposits=JSON.parse(ls("jeff_dep")||"[]")}catch(e){}
+let curDep=null;
+const rp=n=>"Rp"+Number(n).toLocaleString("id-ID");
+function makeDeposit(){
+ const amt=parseInt(document.getElementById("depAmount").value,10);
+ const name=document.getElementById("depName").value.trim();
+ if(!amt||amt<10000)return alert("Minimal deposit Rp10.000.");
+ if(!name)return alert("Isi nama atau kontak kamu.");
+ const code=Math.floor(Math.random()*900)+100;
+ curDep={id:"D"+Date.now().toString().slice(-8),name,amount:amt,code,total:amt+code,status:"Menunggu pembayaran",time:new Date().toLocaleString("id-ID")};
+ deposits.unshift(curDep);
+ ls("jeff_dep",JSON.stringify(deposits.slice(0,50)));
+ document.getElementById("depTotal").textContent=rp(curDep.total);
+ document.getElementById("depCode").textContent="Nominal "+rp(amt)+" + kode unik "+code+" · ID "+curDep.id;
+ document.getElementById("depBox").style.display="block";
+ renderDeposits();
+}
+function confirmWA(){
+ if(!curDep)return;
+ if(ADMIN_WA.includes("x"))return alert("Nomor WhatsApp admin belum diisi di kode (ADMIN_WA).");
+ const msg="Halo admin, saya sudah deposit.%0AID: "+curDep.id+"%0ANama: "+encodeURIComponent(curDep.name)+"%0ATotal transfer: "+rp(curDep.total)+"%0A(bukti transfer saya lampirkan)";
+ window.open("https://wa.me/"+ADMIN_WA+"?text="+msg,"_blank");
+}
+function renderDeposits(){
+ const root=document.getElementById("depList");root.innerHTML="";
+ if(!deposits.length){root.textContent="Belum ada.";return}
+ deposits.slice(0,10).forEach(d=>{
+  const el=document.createElement("div");el.className="item";
+  el.textContent=d.id+" · "+rp(d.total)+" · "+d.status+" · "+d.time;
+  root.appendChild(el);
+ });
 }
 
 /* ---------- Init ---------- */
