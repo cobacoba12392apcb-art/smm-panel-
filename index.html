@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>JEFF SMM PANEL</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#090711;color:#fff;font-family:Arial,sans-serif}
+header{padding:20px;background:#120d20;border-bottom:1px solid #352347}
+.logo{font-size:22px;font-weight:900;color:#c084fc}.logo span{color:#fff}
+main{max-width:850px;margin:auto;padding:16px}
+.balance,.card{background:#181326;border:1px solid #352747;border-radius:14px;padding:17px;margin-bottom:14px}
+.balance{background:linear-gradient(120deg,#6324a6,#24123f)}
+.balance h1{font-size:28px;margin:6px 0 12px}
+button{cursor:pointer;font-family:inherit}
+nav{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:18px}
+nav button{background:#181326;color:#fff;border:1px solid #352747;border-radius:9px;padding:12px 4px}
+nav button.active{background:#702bb4}
+section{display:none}section.active{display:block}
+h2{font-size:19px}
+label{font-size:12px;color:#cdbbe0}
+input,select{display:block;width:100%;padding:13px;margin:7px 0 14px;background:#0d0a16;color:#fff;border:1px solid #45345b;border-radius:9px;font-size:14px}
+.primary{width:100%;padding:13px;background:#9333ea;color:#fff;border:0;border-radius:9px;font-weight:bold}
+.primary:disabled{opacity:.5}
+.item{padding:12px 0;border-bottom:1px solid #352747;font-size:13px}
+.item:last-child{border:0}
+small{color:#aaa}
+.notice{padding:12px;background:#291c39;border-radius:9px;color:#e3c8ff;font-size:12px;line-height:1.5;margin-bottom:14px}
+.plats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}
+.plat{background:#181326;border:1px solid #352747;border-radius:14px;padding:14px 4px 10px;color:#fff;text-align:center;transition:.15s}
+.plat:hover{transform:translateY(-2px);border-color:#9333ea}
+.plat.on{border-color:#c084fc;background:#2a1a45;box-shadow:0 0 14px #9333ea66}
+.plat svg{width:44px;height:44px;display:block;margin:0 auto 7px}
+.plat b{font-size:12px}
+.svc{display:block;width:100%;text-align:left;background:#0d0a16;border:1px solid #45345b;border-radius:10px;padding:11px;margin-bottom:8px;color:#fff;font-size:13px}
+.svc:hover{border-color:#9333ea}
+.svc small{display:block;margin-top:4px}
+.badge{display:inline-block;padding:3px 8px;border-radius:20px;background:#3b2459;font-size:11px;margin-left:6px}
+.picked{padding:11px;background:#0d0a16;border:1px dashed #9333ea;border-radius:10px;margin-bottom:14px;font-size:13px}
+.price{font-weight:bold;color:#c084fc;margin-bottom:14px}
+</style>
+</head>
+<body>
+<header>
+<div class="logo">JEFF <span>SMM PANEL</span></div>
+<small>Social Media Marketing Dashboard</small>
+</header>
+
+<main>
+<div class="balance">
+<small>Saldo provider</small>
+<h1 id="balance">Belum terhubung</h1>
+<button class="primary" style="width:auto;padding:10px 16px" onclick="getBalance()">Refresh Saldo</button>
+</div>
+
+<nav>
+<button class="active" onclick="tab('dashboard',this)">Dashboard</button>
+<button onclick="tab('services',this)">Suntik Sosmed</button>
+<button onclick="tab('order',this)">Order</button>
+<button onclick="tab('history',this)">Riwayat</button>
+<button onclick="tab('settings',this)">API Settings</button>
+<button onclick="tab('payment',this)">QRIS</button>
+</nav>
+
+<section id="dashboard" class="active">
+<h2>Dashboard</h2>
+<div class="card">
+<h3>JEFF SMM PANEL</h3>
+<p>Panel pemasaran media sosial.</p>
+<p id="connection">Status API: Belum dicek</p>
+<button class="primary" onclick="getBalance()">Periksa Koneksi</button>
+</div>
+</section>
+
+<section id="services">
+<h2>Suntik All Sosmed</h2>
+<div class="plats" id="plats"></div>
+<input id="search" placeholder="Cari layanan (mis. followers, likes, views)..." oninput="renderServices()">
+<div id="catalog" class="card">Memuat layanan...</div>
+</section>
+
+<section id="order">
+<h2>Buat Pesanan</h2>
+<div class="card">
+<div id="picked" class="picked">Belum ada layanan dipilih. Pilih dari menu Suntik Sosmed, atau isi ID manual.</div>
+<label>ID Layanan</label>
+<input id="serviceId" type="number" placeholder="ID layanan" oninput="syncPick()">
+<label>Link tujuan</label>
+<input id="target" placeholder="https://...">
+<label id="qtyLabel">Jumlah</label>
+<input id="quantity" type="number" min="1" placeholder="Jumlah" oninput="calcPrice()">
+<div class="price" id="price"></div>
+<button class="primary" id="orderBtn" onclick="createOrder()">Kirim Pesanan</button>
+</div>
+</section>
+
+<section id="history">
+<h2>Riwayat</h2>
+<div class="card" id="historyList">Belum ada riwayat.</div>
+</section>
+
+<section id="settings">
+<h2>Pengaturan API</h2>
+<div class="card">
+<label>API Endpoint</label>
+<input id="endpoint">
+<label>API Key</label>
+<input id="apiKey" type="password" placeholder="Masukkan API key">
+<label>Proxy URL (opsional, isi jika browser kena blok CORS)</label>
+<input id="proxy" placeholder="https://domainmu.com/proxy.php">
+<button class="primary" onclick="saveSettings()">Simpan</button>
+<p class="notice" style="margin-top:14px">Pengaturan tersimpan di browser ini (localStorage). Jangan bagikan file HTML ini ke orang lain karena berisi API key.</p>
+</div>
+</section>
+
+<section id="payment">
+<h2>QRIS Payment</h2>
+<div class="card">
+<img src="https://files.catbox.moe/lhkccu.jpeg" style="width:100%;max-width:280px;display:block;margin:auto" alt="QRIS">
+<p class="notice" style="margin-top:14px">Gambar QRIS saja. Verifikasi pembayaran otomatis memerlukan backend dan webhook payment gateway.</p>
+</div>
+</section>
+</main>
+
+<script>
+const DEFAULT_ENDPOINT="https://app.rajafollowers.com/api/v2";
+const DEFAULT_KEY="rf_live_0e54a58aa9b72f32bab8c72d7d44db4e2048d58a33a28096";
+
+function ls(k,v){try{if(v===undefined)return localStorage.getItem(k);localStorage.setItem(k,v)}catch(e){return null}}
+let apiEndpoint=ls("jeff_ep")||DEFAULT_ENDPOINT;
+let apiKey=ls("jeff_key")||DEFAULT_KEY;
+let proxyUrl=ls("jeff_proxy")||"";
+let services=[],platform="all",picked=null,historyData=[];
+try{historyData=JSON.parse(ls("jeff_hist")||"[]")}catch(e){}
+
+/* ---------- Logo sosmed (SVG inline) ---------- */
+const ICONS={
+all:'<svg viewBox="0 0 48 48"><defs><linearGradient id="gA" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#c084fc"/><stop offset="1" stop-color="#6324a6"/></linearGradient></defs><rect width="48" height="48" rx="12" fill="url(#gA)"/><path d="M24 11l3.6 8.4 9 .8-6.8 5.9 2 8.9L24 30.4l-7.8 4.6 2-8.9-6.8-5.9 9-.8z" fill="#fff"/></svg>',
+instagram:'<svg viewBox="0 0 48 48"><defs><linearGradient id="gI" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#feda75"/><stop offset=".3" stop-color="#fa7e1e"/><stop offset=".55" stop-color="#d62976"/><stop offset=".8" stop-color="#962fbf"/><stop offset="1" stop-color="#4f5bd5"/></linearGradient></defs><rect width="48" height="48" rx="12" fill="url(#gI)"/><rect x="11" y="11" width="26" height="26" rx="8" fill="none" stroke="#fff" stroke-width="3"/><circle cx="24" cy="24" r="6.5" fill="none" stroke="#fff" stroke-width="3"/><circle cx="31.5" cy="16.5" r="1.8" fill="#fff"/></svg>',
+tiktok:'<svg viewBox="0 0 48 48"><rect width="48" height="48" rx="12" fill="#000"/><g fill="none" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M26 11v20a5.5 5.5 0 1 1-5.5-5.5" stroke="#25f4ee" transform="translate(-1.5 -1)"/><path d="M26 11c.5 4 3 6.5 7.5 7" stroke="#25f4ee" transform="translate(-1.5 -1)"/><path d="M26 11v20a5.5 5.5 0 1 1-5.5-5.5" stroke="#fe2c55" transform="translate(1.5 1)"/><path d="M26 11c.5 4 3 6.5 7.5 7" stroke="#fe2c55" transform="translate(1.5 1)"/><path d="M26 11v20a5.5 5.5 0 1 1-5.5-5.5" stroke="#fff"/><path d="M26 11c.5 4 3 6.5 7.5 7" stroke="#fff"/></g></svg>',
+youtube:'<svg viewBox="0 0 48 48"><rect width="48" height="48" rx="12" fill="#fff"/><rect x="6" y="12" width="36" height="24" rx="8" fill="#f00"/><path d="M20 18v12l10-6z" fill="#fff"/></svg>',
+facebook:'<svg viewBox="0 0 48 48"><rect width="48" height="48" rx="12" fill="#1877f2"/><path d="M26.5 40V26h4.7l.8-5.6h-5.5v-3.6c0-1.6.6-2.8 2.9-2.8H32V9.1c-.5-.1-2.3-.3-4.3-.3-4.3 0-7.2 2.600-7.2 7.400v4.200H16V26h4.500v14z" fill="#fff"/></svg>',
+twitter:'<svg viewBox="0 0 48 48"><rect width="48" height="48" rx="12" fill="#000"/><path d="M12 11h7l17 26h-7z" fill="none" stroke="#fff" stroke-width="3" stroke-linejoin="round"/><path d="M35 11L13 37" stroke="#fff" stroke-width="3" stroke-linecap="round"/></svg>',
+telegram:'<svg viewBox="0 0 48 48"><defs><linearGradient id="gT" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#37aee2"/><stop offset="1" stop-color="#1e96c8"/></linearGradient></defs><rect width="48" height="48" rx="12" fill="url(#gT)"/><path d="M10.500 23.500l24-9.800c1.100-.4 2.100.3 1.700 2l-4 19c-.3 1.300-1.100 1.600-2.200 1l-6-4.400-2.900 2.800c-.3.300-.6.600-1.200.6l.4-6.200 11.300-10.200c.5-.4-.1-.7-.8-.3L16.800 26.700l-6-1.900c-1.300-.4-1.300-1.300.3-1.900z" fill="#fff"/></svg>',
+whatsapp:'<svg viewBox="0 0 48 48"><rect width="48" height="48" rx="12" fill="#25d366"/><path d="M24 10.500a13.500 13.500 0 0 0-11.600 20.400L10.500 37.500l6.800-1.800A13.500 13.500 0 1 0 24 10.500z" fill="none" stroke="#fff" stroke-width="3" stroke-linejoin="round"/><path d="M19.500 18.500c.5 4 4.500 8 9 9l2-2.200-3-1.600-1.400 1.200c-1.400-.6-2.600-1.800-3.200-3.200l1.200-1.400-1.600-3z" fill="#fff"/></svg>',
+spotify:'<svg viewBox="0 0 48 48"><rect width="48" height="48" rx="12" fill="#191414"/><circle cx="24" cy="24" r="15" fill="#1ed760"/><g fill="none" stroke="#191414" stroke-linecap="round"><path d="M15 19.500c6-1.800 12-1.200 18 1.500" stroke-width="3"/><path d="M16 25.500c5-1.400 10-1 14.500 1.500" stroke-width="2.600"/><path d="M17 31c4-1 8-.7 11.500 1.100" stroke-width="2.200"/></g></svg>'
+};
+const PLATS=[
+ {id:"all",name:"Semua",re:/./},
+ {id:"instagram",name:"Instagram",re:/instagram|\big\b/i},
+ {id:"tiktok",name:"TikTok",re:/tiktok|tik tok/i},
+ {id:"youtube",name:"YouTube",re:/youtube|\byt\b/i},
+ {id:"facebook",name:"Facebook",re:/facebook|\bfb\b/i},
+ {id:"twitter",name:"X / Twitter",re:/twitter|\bx\b|tweet/i},
+ {id:"telegram",name:"Telegram",re:/telegram/i},
+ {id:"whatsapp",name:"WhatsApp",re:/whatsapp/i},
+ {id:"spotify",name:"Spotify",re:/spotify/i}
+];
+function buildPlats(){
+ const root=document.getElementById("plats");root.innerHTML="";
+ PLATS.forEach(p=>{
+  const b=document.createElement("button");
+  b.className="plat"+(p.id===platform?" on":"");
+  b.innerHTML=ICONS[p.id]+"<b></b>";
+  b.querySelector("b").textContent=p.name;
+  b.onclick=()=>{platform=p.id;buildPlats();renderServices()};
+  root.appendChild(b);
+ });
+}
+
+/* ---------- Navigasi ---------- */
+function tab(id,button){
+ document.querySelectorAll("section").forEach(x=>x.classList.remove("active"));
+ document.getElementById(id).classList.add("active");
+ document.querySelectorAll("nav button").forEach(x=>x.classList.remove("active"));
+ if(button)button.classList.add("active");
+ if(id==="services"&&!services.length)getServices();
+ if(id==="history")renderHistory();
+}
+
+/* ---------- Pengaturan ---------- */
+function saveSettings(){
+ const ep=document.getElementById("endpoint").value.trim();
+ const k=document.getElementById("apiKey").value.trim();
+ if(!ep||!k)return alert("Isi endpoint dan API key.");
+ apiEndpoint=ep;apiKey=k;proxyUrl=document.getElementById("proxy").value.trim();
+ ls("jeff_ep",apiEndpoint);ls("jeff_key",apiKey);ls("jeff_proxy",proxyUrl);
+ services=[];
+ alert("Pengaturan disimpan.");
+ getBalance();
+}
+
+/* ---------- API ---------- */
+async function apiRequest(action,data={}){
+ if(!apiKey)throw new Error("Masukkan API key di pengaturan.");
+ const body=new URLSearchParams({key:apiKey,action,...data});
+ const url=proxyUrl||apiEndpoint;
+ let response;
+ try{
+  response=await fetch(url,{method:"POST",headers:{"Content-Type":"application/x-www-form-urlencoded"},body});
+ }catch(e){
+  throw new Error("Request diblokir browser (kemungkinan CORS). Isi Proxy URL di API Settings, atau buka file ini lewat server/hosting.");
+ }
+ if(!response.ok)throw new Error("HTTP "+response.status);
+ const text=await response.text();
+ let json;
+ try{json=JSON.parse(text)}catch(e){throw new Error("Respons bukan JSON: "+text.slice(0,80))}
+ if(json&&json.error)throw new Error(json.error);
+ return json;
+}
+
+async function getBalance(){
+ const conn=document.getElementById("connection");
+ conn.textContent="Status API: Menghubungkan...";
+ try{
+  const r=await apiRequest("balance");
+  const cur=r.currency||"";
+  document.getElementById("balance").textContent=
+   r.balance!==undefined?(cur+" "+Number(r.balance).toLocaleString("id-ID")).trim():"Respons diterima";
+  conn.textContent="Status API: Terhubung ✅";
+ }catch(e){
+  conn.textContent="Status API: Gagal — "+e.message;
+  document.getElementById("balance").textContent="Gagal terhubung";
+ }
+}
+
+async function getServices(){
+ const root=document.getElementById("catalog");
+ root.textContent="Memuat layanan...";
+ try{
+  const r=await apiRequest("services");
+  if(!Array.isArray(r))throw new Error("Format katalog tidak dikenali.");
+  services=r;
+  renderServices();
+ }catch(e){
+  root.innerHTML="";
+  const d=document.createElement("div");d.textContent="Gagal memuat: "+e.message;root.appendChild(d);
+  const b=document.createElement("button");b.className="primary";b.style.marginTop="12px";b.textContent="Coba Lagi";b.onclick=getServices;root.appendChild(b);
+ }
+}
+
+function renderServices(){
+ const root=document.getElementById("catalog");
+ const q=document.getElementById("search").value.trim().toLowerCase();
+ const p=PLATS.find(x=>x.id===platform);
+ const list=services.filter(s=>{
+  const hay=(s.category||"")+" "+(s.name||"");
+  return p.re.test(hay)&&(!q||hay.toLowerCase().includes(q));
+ }).slice(0,100);
+ root.innerHTML="";
+ if(!services.length){root.textContent="Belum ada layanan.";return}
+ if(!list.length){root.textContent="Tidak ada layanan yang cocok.";return}
+ list.forEach(s=>{
+  const b=document.createElement("button");b.className="svc";
+  const t=document.createElement("div");
+  t.textContent="#"+s.service+" · "+s.name;
+  const sm=document.createElement("small");
+  sm.textContent=(s.category||"")+" · Rp"+Number(s.rate).toLocaleString("id-ID")+"/1000 · min "+s.min+" · max "+s.max;
+  b.appendChild(t);b.appendChild(sm);
+  b.onclick=()=>pickService(s);
+  root.appendChild(b);
+ });
+}
+
+function pickService(s){
+ picked=s;
+ document.getElementById("serviceId").value=s.service;
+ syncPick();
+ tab("order");
+ document.querySelectorAll("nav button").forEach(x=>x.classList.toggle("active",x.textContent==="Order"));
+ window.scrollTo(0,0);
+}
+
+function syncPick(){
+ const id=document.getElementById("serviceId").value.trim();
+ picked=services.find(s=>String(s.service)===id)||null;
+ const box=document.getElementById("picked");
+ if(picked){
+  box.textContent="#"+picked.service+" · "+picked.name+" — min "+picked.min+", max "+picked.max;
+  document.getElementById("qtyLabel").textContent="Jumlah (min "+picked.min+" / max "+picked.max+")";
+ }else{
+  box.textContent="Belum ada layanan dipilih. Pilih dari menu Suntik Sosmed, atau isi ID manual.";
+  document.getElementById("qtyLabel").textContent="Jumlah";
+ }
+ calcPrice();
+}
+function calcPrice(){
+ const q=Number(document.getElementById("quantity").value);
+ document.getElementById("price").textContent=
+  picked&&q?"Estimasi harga: Rp"+Math.round(picked.rate*q/1000).toLocaleString("id-ID"):"";
+}
+
+async function createOrder(){
+ const service=document.getElementById("serviceId").value.trim();
+ const link=document.getElementById("target").value.trim();
+ const quantity=document.getElementById("quantity").value;
+ if(!service||!link||!quantity)return alert("Lengkapi semua data.");
+ if(picked&&(+quantity<+picked.min||+quantity>+picked.max))
+  return alert("Jumlah harus antara "+picked.min+" dan "+picked.max+".");
+ const btn=document.getElementById("orderBtn");
+ btn.disabled=true;btn.textContent="Mengirim...";
+ try{
+  const r=await apiRequest("add",{service,link,quantity});
+  if(!r.order)throw new Error("Respons tidak berisi ID order.");
+  historyData.unshift({id:r.order,service,name:picked?picked.name:"Layanan #"+service,link,quantity,status:"Pending",time:new Date().toLocaleString("id-ID")});
+  ls("jeff_hist",JSON.stringify(historyData.slice(0,100)));
+  alert("Order berhasil! ID: "+r.order);
+  document.getElementById("target").value="";
+  document.getElementById("quantity").value="";
+  calcPrice();getBalance();
+  tab("history");
+  document.querySelectorAll("nav button").forEach(x=>x.classList.toggle("active",x.textContent==="Riwayat"));
+ }catch(e){alert("Order gagal: "+e.message)}
+ btn.disabled=false;btn.textContent="Kirim Pesanan";
+}
+
+function renderHistory(){
+ const root=document.getElementById("historyList");
+ root.innerHTML="";
+ if(!historyData.length){root.textContent="Belum ada riwayat.";return}
+ historyData.forEach(h=>{
+  const d=document.createElement("div");d.className="item";
+  const a=document.createElement("div");a.textContent="#"+h.id+" · "+h.name;
+  const b=document.createElement("small");b.textContent=h.quantity+" · "+h.link+" · "+h.time;
+  const s=document.createElement("div");s.innerHTML='<span class="badge"></span>';
+  s.firstChild.textContent=h.status+(h.remains!==undefined?" · sisa "+h.remains:"");
+  d.append(a,b,s);root.appendChild(d);
+ });
+ const btn=document.createElement("button");
+ btn.className="primary";btn.style.marginTop="12px";btn.textContent="Cek Status Order";
+ btn.onclick=refreshStatus;root.appendChild(btn);
+}
+
+async function refreshStatus(){
+ try{
+  const ids=historyData.slice(0,100).map(h=>h.id).join(",");
+  const r=await apiRequest("status",{orders:ids});
+  historyData.forEach(h=>{
+   const x=r[h.id];
+   if(x&&!x.error){h.status=x.status;h.remains=x.remains}
+  });
+  ls("jeff_hist",JSON.stringify(historyData));
+  renderHistory();
+ }catch(e){alert("Gagal cek status: "+e.message)}
+}
+
+/* ---------- Init ---------- */
+document.getElementById("endpoint").value=apiEndpoint;
+document.getElementById("apiKey").value=apiKey;
+document.getElementById("proxy").value=proxyUrl;
+buildPlats();
+getBalance();
+</script>
+</body>
+</html>
