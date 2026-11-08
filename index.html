@@ -46,10 +46,13 @@ header{display:flex;justify-content:space-between;align-items:center}
 <main>
 <div id="authView" class="card">
 <h2>Masuk / Daftar</h2>
+<div id="srv" class="notice" style="margin-bottom:12px">Mengecek server...</div>
 <label>Username</label><input id="un" autocomplete="username">
 <label>Password (min 6 karakter)</label><input id="pw" type="password" autocomplete="current-password">
-<button class="primary" onclick="doAuth('login')">Masuk</button>
-<button class="primary" style="margin-top:8px;background:#352747" onclick="doAuth('register')">Daftar Akun Baru</button>
+<div id="authMsg" style="margin:0 0 12px;font-size:13px;min-height:16px"></div>
+<button id="btnLogin" class="primary" onclick="doAuth('login')">Masuk</button>
+<button id="btnReg" class="primary" style="margin-top:8px;background:#352747" onclick="doAuth('register')">Daftar Akun Baru</button>
+<small style="display:block;margin-top:12px">versi 3</small>
 <p class="notice" style="margin:14px 0 0">Hasil layanan bisa turun (drop) dan tidak ada jaminan permanen kecuali tertulis di nama layanan.</p>
 </div>
 <div id="appView" style="display:none">
@@ -86,7 +89,7 @@ header{display:flex;justify-content:space-between;align-items:center}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script>
 const WORKER="https://jeff-proxy.cobacoba12392apcb.workers.dev/";
-const ADMIN_WA="6283187533708"; // GANTI dengan nomor WhatsApp admin (format 62..., tanpa +)
+const ADMIN_WA="628xxxxxxxxxx"; // GANTI dengan nomor WhatsApp admin (format 62..., tanpa +)
 function ls(k,v){try{if(v===undefined)return localStorage.getItem(k);if(v===null)localStorage.removeItem(k);else localStorage.setItem(k,v)}catch(e){return null}}
 let token=ls("jeff_tok")||"",services=[],platform="all",picked=null,curDep=null;
 const rp=n=>"Rp"+Number(n).toLocaleString("id-ID");
@@ -128,16 +131,28 @@ function buildPlats(){
 
 
 async function call(action,data={}){
- let r;
- try{r=await fetch(WORKER,{method:"POST",headers:Object.assign({"Content-Type":"application/json"},token?{Authorization:"Bearer "+token}:{}),body:JSON.stringify(Object.assign({action},data))})}
- catch(e){throw new Error("Tidak bisa terhubung ke server.")}
- const j=await r.json().catch(()=>({error:"Respons server tidak valid"}));
+ let r;const ctl=new AbortController(),tm=setTimeout(()=>ctl.abort(),20000);
+ try{r=await fetch(WORKER,{method:"POST",signal:ctl.signal,headers:Object.assign({"Content-Type":"application/json"},token?{Authorization:"Bearer "+token}:{}),body:JSON.stringify(Object.assign({action},data))})}
+ catch(e){clearTimeout(tm);throw new Error(e.name==="AbortError"?"Server tidak merespons (timeout 20 detik).":"Tidak bisa terhubung ke server. Cek alamat Worker dan pastikan kode Worker sudah benar.")}
+ clearTimeout(tm);
+ const j=await r.json().catch(()=>({error:"Server membalas tapi bukan JSON (HTTP "+r.status+"). Kode Worker kemungkinan salah."}));
  if(!r.ok||j.error){if(r.status===401&&token)logout(true);throw new Error(j.error||"HTTP "+r.status)}
  return j;
 }
 async function doAuth(kind){
- try{const j=await call(kind,{username:$("un").value,password:$("pw").value});token=j.token;ls("jeff_tok",token);$("pw").value="";showApp()}
- catch(e){alert(e.message)}
+ const m=$("authMsg");m.style.color="#e3c8ff";m.textContent="Memproses...";
+ ["btnLogin","btnReg"].forEach(i=>$(i).disabled=true);
+ try{const j=await call(kind,{username:$("un").value,password:$("pw").value});token=j.token;ls("jeff_tok",token);$("pw").value="";m.textContent="";showApp()}
+ catch(e){m.style.color="#fca5a5";m.textContent="⚠ "+e.message}
+ ["btnLogin","btnReg"].forEach(i=>$(i).disabled=false);
+}
+async function checkServer(){
+ const s=$("srv");let r;
+ const bad=t=>{s.textContent="Server: "+t;s.style.color="#fca5a5"};
+ try{r=await fetch(WORKER,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({action:"ping"})})}
+ catch(e){return bad("TIDAK terhubung ❌ (alamat Worker salah, atau kode Worker belum benar)")}
+ try{await r.json();s.textContent="Server: terhubung ✅";s.style.color="#86efac"}
+ catch(e){bad("membalas tapi bukan JSON ❌ (kode Worker belum diganti)")}
 }
 function logout(auto){token="";ls("jeff_tok",null);$("appView").style.display="none";$("who").style.display="none";$("authView").style.display="block";if(auto)alert("Sesi habis, silakan login lagi.")}
 async function showApp(){
@@ -216,5 +231,6 @@ async function renderDeposits(){
   l.forEach(d=>{const e=document.createElement("div");e.className="item";e.textContent="D"+d.id+" · "+rp(d.total)+" · "+(d.status==="confirmed"?"Berhasil ✅":"Menunggu");root.appendChild(e)})}
  catch(e){root.textContent="Gagal: "+e.message}
 }
+checkServer();
 if(token)showApp();
 </script></body></html>
