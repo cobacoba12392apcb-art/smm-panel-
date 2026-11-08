@@ -154,7 +154,7 @@ nav button.on svg{filter:drop-shadow(0 0 6px #1ed76088)}
 #fp.o{transform:none}
 #fp .top{display:flex;justify-content:space-between;align-items:center;font-weight:700}
 #fp .cv{flex:1;display:grid;place-items:center;padding:20px 0}
-#ytw{width:100%;max-width:320px;aspect-ratio:1;border-radius:12px;overflow:hidden;background:#000;box-shadow:0 20px 50px #000b}
+#ytw{position:fixed;left:-400px;top:0;width:220px;height:220px;opacity:0;pointer-events:none;overflow:hidden;z-index:-1;visibility:visible}
 #ytw iframe{width:100%;height:100%;border:0;display:block}
 #fp .cv img{width:100%;max-width:320px;aspect-ratio:1;border-radius:12px;object-fit:cover;box-shadow:0 20px 50px #000b;background:#222}
 .ti{display:flex;align-items:center;gap:12px}.ti div{flex:1;min-width:0}
@@ -551,7 +551,8 @@ input[type=range]::-moz-range-thumb{width:14px;height:14px;border:0;border-radiu
  <div id="sheet"></div>
  <div id="fp">
   <div class="top"><button class="ib" id="fc" aria-label="Tutup"><svg class="ic" viewBox="0 0 24 24"><path d="m5 9 7 7 7-7"/></svg></button><span>Sedang diputar</span><span style="width:42px"></span></div>
-  <div class="cv"><div id="ytw"><div id="ytp"></div></div></div>
+  <div class="cv"><img id="fi" alt=""></div>
+  <div id="ytw" aria-hidden="true"><div id="ytp"></div></div>
   <div class="ti"><div><b id="ft">-</b><p id="fa">-</p></div><button class="ib" id="fh" aria-label="Suka"></button></div>
   <div class="pr"><span id="tc">0:00</span><input type="range" id="sk" min="0" max="1000" value="0"><span id="td">0:00</span></div>
   <div class="ct">
@@ -608,7 +609,7 @@ const au=(function(){
   o._busy=true;
   const init=()=>{
    try{
-    o._p=new YT.Player('ytp',{width:'100%',height:'100%',playerVars:{playsinline:1,rel:0,modestbranding:1,controls:1},events:{
+    o._p=new YT.Player('ytp',{width:'100%',height:'100%',playerVars:{playsinline:1,rel:0,modestbranding:1,controls:0,disablekb:1,fs:0,iv_load_policy:3,cc_load_policy:0},events:{
      onReady:()=>{o._ready=true;o._busy=false;if(o._pend){const v=o._pend;o._pend='';try{o._p.loadVideoById(v)}catch(e){}}},
      onStateChange:e=>{
       const s=e&&e.data;
@@ -794,15 +795,15 @@ function ui(){
  const t=S.cur,p=!au.paused&&!!t;
  $('#mini').classList.toggle('pl',p);
  $('#mpp').innerHTML=p?IC.pause:IC.play;$('#fpp').innerHTML=p?IC.pause:IC.play;
- if(!t){setSrc($('#mi'),PH);$('#mb').textContent='Pilih lagu';$('#ms').textContent='Ketuk putar';return}
- setSrc($('#mi'),t.img);
+ if(!t){setSrc($('#mi'),PH);setSrc($('#fi'),PH);$('#mb').textContent='Pilih lagu';$('#ms').textContent='Ketuk putar';return}
+ setSrc($('#mi'),t.img);setSrc($('#fi'),t.img);
  $('#mb').textContent=t.title;$('#ms').textContent=t.artist;
  $('#ft').textContent=t.title;$('#fa').textContent=t.artist;
  const h=liked(t)?IC.heartOn:IC.heart;$('#fh').innerHTML=h;
  document.title=t.title+' · JEFF MUSIC';
  $$('.row').forEach(r=>{const a=L[r.dataset.c];r.classList.toggle('on',!!(a&&a[r.dataset.i]&&a[r.dataset.i].id===t.id))});
 }
-function startAudio(t){au.src=pickUrl(t);au.play().catch(()=>{});ui();clearTimeout(S.ht);S.ht=setTimeout(()=>{if(S.cur===t&&au.paused&&!au.fatal)toast('Ketuk tombol putar pada video kalau belum mulai')},4500)}
+function startAudio(t){au.src=pickUrl(t);au.play().catch(()=>{});ui();clearTimeout(S.ht);S.ht=setTimeout(()=>{if(S.cur===t&&au.paused&&!au.fatal)toast('Ketuk tombol putar kalau belum mulai')},4500)}
 function playCur(){
  const t=S.q[S.i];if(!t)return;
  S.cur=t;
