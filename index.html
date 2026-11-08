@@ -1,236 +1,151 @@
 <!DOCTYPE html>
-<html lang="id"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>JEFF SMM PANEL</title>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>JEFF MUSIC</title>
 <style>
-*{box-sizing:border-box}
-body{margin:0;background:#090711;color:#fff;font-family:Arial,sans-serif}
-header{padding:20px;background:#120d20;border-bottom:1px solid #352347}
-.logo{font-size:22px;font-weight:900;color:#c084fc}.logo span{color:#fff}
-main{max-width:850px;margin:auto;padding:16px}
-.balance,.card{background:#181326;border:1px solid #352747;border-radius:14px;padding:17px;margin-bottom:14px}
-.balance{background:linear-gradient(120deg,#6324a6,#24123f)}
-.balance h1{font-size:28px;margin:6px 0 12px}
-button{cursor:pointer;font-family:inherit}
-nav{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:18px}
-nav button{background:#181326;color:#fff;border:1px solid #352747;border-radius:9px;padding:12px 4px}
-nav button.active{background:#702bb4}
-section{display:none}section.active{display:block}
-h2{font-size:19px}
-label{font-size:12px;color:#cdbbe0}
-input,select{display:block;width:100%;padding:13px;margin:7px 0 14px;background:#0d0a16;color:#fff;border:1px solid #45345b;border-radius:9px;font-size:14px}
-.primary{width:100%;padding:13px;background:#9333ea;color:#fff;border:0;border-radius:9px;font-weight:bold}
-.primary:disabled{opacity:.5}
-.item{padding:12px 0;border-bottom:1px solid #352747;font-size:13px}
-.item:last-child{border:0}
-small{color:#aaa}
-.notice{padding:12px;background:#291c39;border-radius:9px;color:#e3c8ff;font-size:12px;line-height:1.5;margin-bottom:14px}
-.plats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}
-.plat{background:#181326;border:1px solid #352747;border-radius:14px;padding:14px 4px 10px;color:#fff;text-align:center;transition:.15s}
-.plat:hover{transform:translateY(-2px);border-color:#9333ea}
-.plat.on{border-color:#c084fc;background:#2a1a45;box-shadow:0 0 14px #9333ea66}
-.plat svg{width:44px;height:44px;display:block;margin:0 auto 7px}
-.plat b{font-size:12px}
-.svc{display:block;width:100%;text-align:left;background:#0d0a16;border:1px solid #45345b;border-radius:10px;padding:11px;margin-bottom:8px;color:#fff;font-size:13px}
-.svc:hover{border-color:#9333ea}
-.svc small{display:block;margin-top:4px}
-.badge{display:inline-block;padding:3px 8px;border-radius:20px;background:#3b2459;font-size:11px;margin-left:6px}
-.picked{padding:11px;background:#0d0a16;border:1px dashed #9333ea;border-radius:10px;margin-bottom:14px;font-size:13px}
-.price{font-weight:bold;color:#c084fc;margin-bottom:14px}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Arial,sans-serif;-webkit-tap-highlight-color:transparent}
+body{background:#0a0a0a;color:#fff;padding:14px 14px 150px;overflow-x:hidden}
+.top{display:flex;justify-content:space-between;align-items:center}
+.logo{display:flex;gap:8px;align-items:center}
+.logo-ic{font-size:36px;filter:drop-shadow(0 0 12px #1ed760);line-height:1}
+.logo h1{font-size:26px;line-height:1;letter-spacing:.5px}
+.logo h1 span{color:#1ed760}
+.logo p{font-size:11px;color:#aaa;letter-spacing:.5px;margin-top:2px}
+.right{display:flex;gap:10px;align-items:center}
+.bell{font-size:24px;position:relative}
+.bell:after{content:'';position:absolute;top:2px;right:2px;width:8px;height:8px;background:#ff2d55;border-radius:50%}
+.avatar{width:40px;height:40px;border-radius:50%;background:url('https://i.pinimg.com/736x/8a/5e/1d/8a5e1d8d8a5e1d8d8a5e1d8d8a5e1d8d.jpg') center/cover #222;border:2px solid #222;position:relative;overflow:hidden}
+.avatar:after{content:'';position:absolute;right:0;bottom:0;width:10px;height:10px;background:#1ed760;border-radius:50%;border:2px solid #000}
+.search{display:flex;align-items:center;gap:8px;background:#1a1a1a;border:1px solid #2a2a2a;padding:12px 14px;border-radius:30px;margin-top:16px}
+.search input{flex:1;background:transparent;border:none;outline:none;color:#fff;font-size:14px}
+.search span{font-size:18px;color:#888}
+.premium{margin-top:16px;background:linear-gradient(135deg,#021a0c 0%,#04240f 40%,#0a4d22 70%,#1ed760 100%);border:1px solid #1ed76055;border-radius:18px;padding:16px;position:relative;overflow:hidden;box-shadow:0 10px 30px rgba(30,215,96,.25)}
+.premium h2{font-size:16px}
+.premium h2 span{color:#1ed760}
+.premium p{font-size:13px;color:#eee;margin:5px 0 10px}
+.premium ul{list-style:none;font-size:12.5px;line-height:1.9;color:#eee}
+.premium ul li:before{content:'✅ ';font-size:11px}
+.btn-prem{margin-top:12px;background:linear-gradient(90deg,#d4ff6a,#1ed760);color:#000;border:none;padding:10px 16px;border-radius:20px;font-weight:800;font-size:13px;box-shadow:0 5px 15px rgba(30,215,96,.4)}
+.crown{position:absolute;right:-8px;top:-8px;font-size:110px;filter:drop-shadow(0 10px 20px rgba(0,0,0,.6)) drop-shadow(0 0 20px #1ed760);transform:rotate(8deg)}
+.dots{text-align:center;margin:10px 0}
+.dots span{display:inline-block;width:7px;height:7px;background:#333;border-radius:50%;margin:0 3px}
+.dots span.on{background:#1ed760;width:10px;height:10px}
+.sec{display:flex;justify-content:space-between;align-items:center;margin:18px 0 12px}
+.sec h3{font-size:17px}
+.sec h3:before{content:'';display:inline-block;width:4px;height:18px;background:#1ed760;border-radius:10px;margin-right:8px;vertical-align:-2px}
+.sec a{color:#1ed760;font-size:13px;text-decoration:none}
+.grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+.gcard{background:linear-gradient(145deg,#1e1e1e,#121212);border:1px solid #2a2a2a;border-radius:16px;padding:16px 8px;text-align:center;box-shadow:inset 0 1px 0 #ffffff22,0 8px 20px rgba(0,0,0,.5);cursor:pointer}
+.gcard:active{transform:scale(.96)}
+.gicon{font-size:38px;display:block;filter:drop-shadow(0 6px 10px rgba(0,0,0,.6)) drop-shadow(0 0 8px rgba(30,215,96,.3));line-height:1}
+.gcard p{font-size:13px;margin-top:8px;color:#ddd}
+.list{display:flex;flex-direction:column;gap:2px}
+.item{display:flex;gap:12px;align-items:center;padding:10px 4px;border-radius:12px;cursor:pointer}
+.item img{width:62px;height:62px;border-radius:12px;object-fit:cover;box-shadow:0 5px 15px rgba(0,0,0,.6)}
+.item b{font-size:15px;font-weight:600;display:block}
+.item p{font-size:13px;color:#888;margin-top:2px}
+.item .dot{margin-left:auto;font-size:22px;color:#888;letter-spacing:2px}
+.mini{position:fixed;left:12px;right:12px;bottom:76px;background:#171717;border:1px solid #2a2a2a;border-radius:20px;padding:10px 12px;display:flex;align-items:center;gap:10px;box-shadow:0 10px 30px rgba(0,0,0,.7);z-index:99}
+.mini img{width:48px;height:48px;border-radius:10px;object-fit:cover}
+.mini-info{flex:1;min-width:0}
+.mini-info b{font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block}
+.mini-info p{font-size:12px;color:#888}
+.mini button{background:none;border:none;color:#fff;font-size:20px}
+.mini .playbig{width:42px;height:42px;background:#fff;color:#000;border-radius:50%;font-size:18px;font-weight:bold}
+.nav{position:fixed;left:0;right:0;bottom:0;background:#0f0f0f;border-top:1px solid #222;display:flex;padding:10px 0 14px;z-index:100}
+.nav div{flex:1;text-align:center;font-size:11px;color:#888}
+.nav div.on{color:#1ed760}
+.nav div span{display:block;font-size:22px;margin-bottom:2px}
+#player{display:none}
+</style>
+</head>
+<body>
 
-nav{grid-template-columns:repeat(4,1fr)}nav button{font-size:12px}
-header{display:flex;justify-content:space-between;align-items:center}
-.out{background:none;border:1px solid #45345b;color:#cdbbe0;border-radius:8px;padding:6px 10px;font-size:12px}
-</style></head><body>
-<header><div><div class="logo">JEFF <span>SMM PANEL</span></div><small>Social Media Marketing</small></div>
-<div id="who" style="display:none;text-align:right;font-size:12px"><div id="uname"></div><button class="out" onclick="logout()">Keluar</button></div></header>
-<main>
-<div id="authView" class="card">
-<h2>Masuk / Daftar</h2>
-<div id="srv" class="notice" style="margin-bottom:12px">Mengecek server...</div>
-<label>Username</label><input id="un" autocomplete="username">
-<label>Password (min 6 karakter)</label><input id="pw" type="password" autocomplete="current-password">
-<div id="authMsg" style="margin:0 0 12px;font-size:13px;min-height:16px"></div>
-<button id="btnLogin" class="primary" onclick="doAuth('login')">Masuk</button>
-<button id="btnReg" class="primary" style="margin-top:8px;background:#352747" onclick="doAuth('register')">Daftar Akun Baru</button>
-<small style="display:block;margin-top:12px">versi 3</small>
-<p class="notice" style="margin:14px 0 0">Hasil layanan bisa turun (drop) dan tidak ada jaminan permanen kecuali tertulis di nama layanan.</p>
+<div class="top">
+  <div class="logo"><div class="logo-ic">🎵</div><div><h1>JEFF <span>MUSIC</span></h1><p>Listen • Enjoy • Premium</p></div></div>
+  <div class="right"><div class="bell">🔔</div><div class="avatar"></div></div>
 </div>
-<div id="appView" style="display:none">
-<div class="balance"><small>Saldo kamu</small><h1 id="balance">Rp0</h1></div>
-<nav>
-<button class="active" onclick="tab('services',this)">Suntik Sosmed</button>
-<button onclick="tab('order',this)">Order</button>
-<button onclick="tab('history',this)">Riwayat</button>
-<button onclick="tab('deposit',this)">Deposit</button>
-</nav>
-<section id="services" class="active"><h2>Suntik All Sosmed</h2>
-<div class="plats" id="plats"></div>
-<input id="search" placeholder="Cari layanan..." oninput="renderServices()">
-<div id="catalog" class="card">Memuat layanan...</div></section>
-<section id="order"><h2>Buat Pesanan</h2><div class="card">
-<div id="picked" class="picked">Pilih layanan dari menu Suntik Sosmed.</div>
-<label>ID Layanan</label><input id="serviceId" type="number" oninput="syncPick()">
-<label>Link tujuan</label><input id="target" placeholder="https://...">
-<label id="qtyLabel">Jumlah</label><input id="quantity" type="number" min="1" oninput="calcPrice()">
-<div class="price" id="price"></div>
-<button class="primary" id="orderBtn" onclick="createOrder()">Kirim Pesanan</button></div></section>
-<section id="history"><h2>Riwayat Order</h2><div class="card" id="historyList">Memuat...</div></section>
-<section id="deposit"><h2>Deposit Saldo</h2>
-<div class="card"><label>Nominal (min Rp10.000)</label><input id="depAmount" type="number" step="1000" placeholder="50000">
-<button class="primary" onclick="makeDeposit()">Buat Tagihan</button></div>
-<div class="card" id="depBox" style="display:none;text-align:center"><small>Transfer TEPAT sesuai total ini</small>
-<h1 id="depTotal" style="margin:6px 0;color:#c084fc"></h1><small id="depCode"></small>
-<div id="qrBox" style="display:none;background:#fff;padding:12px;border-radius:10px;margin:14px auto"></div>
-<img id="manualQ" src="https://files.catbox.moe/lhkccu.jpeg" style="width:100%;max-width:280px;display:block;margin:14px auto;background:#fff;border-radius:10px" alt="QRIS">
-<button id="waBtn" class="primary" onclick="confirmWA()">Sudah Bayar → Konfirmasi WhatsApp</button>
-<p class="notice" style="margin-top:14px;text-align:left">Saldo masuk setelah admin mengecek pembayaranmu.</p></div>
-<div class="card"><h3 style="margin-top:0">Riwayat Deposit</h3><div id="depList">-</div></div></section>
-</div></main>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+<div class="search"><span>🔍</span><input id="q" placeholder="Cari lagu, artis, atau playlist..." onkeyup="if(event.key==='Enter')cari()"><span onclick="cari()">⚙️</span></div>
+
+<div class="premium">
+  <div class="crown">👑</div>
+  <h2>💎 JEFF MUSIC <span>PREMIUM</span></h2>
+  <p>Nikmati musik tanpa batas!</p>
+  <ul><li>Tanpa iklan</li><li>Kualitas audio HD</li><li>Akses fitur premium</li></ul>
+  <button class="btn-prem" onclick="alert('Premium - Hubungi admin JEFF MUSIC untuk upgrade!')">Upgrade Sekarang &gt;</button>
+</div>
+<div class="dots"><span class="on"></span><span></span><span></span></div>
+
+<div class="sec"><h3>Akses Cepat</h3><a href="#" onclick="load('Bernadya');return false">Lihat Semua &gt;</a></div>
+<div class="grid">
+  <div class="gcard" onclick="quick('Bernadya')"><span class="gicon">🎧</span><p>Musik</p></div>
+  <div class="gcard" onclick="quick('Hindia album')"><span class="gicon">💿</span><p>Album</p></div>
+  <div class="gcard" onclick="quick('playlist viral')"><span class="gicon">🎼</span><p>Playlist</p></div>
+  <div class="gcard" onclick="alert('Profil - JEFF')"><span class="gicon">👤</span><p>Profil</p></div>
+  <div class="gcard" onclick="showFav()"><span class="gicon">⭐</span><p>Favorit</p></div>
+  <div class="gcard" onclick="alert('Pengaturan JEFF MUSIC')"><span class="gicon">⚙️</span><p>Pengaturan</p></div>
+</div>
+
+<div class="sec"><h3>Playlist Terbaru</h3><a href="#" onclick="load('viral');return false">Lihat Semua &gt;</a></div>
+<div class="list" id="list"><p style="color:#888;text-align:center;padding:20px">Loading lagu...</p></div>
+
+<audio id="player"></audio>
+
+<div class="mini" id="mini" style="display:none">
+  <img id="mImg" src="">
+  <div class="mini-info"><b id="mTitle">-</b><p id="mArtist">-</p></div>
+  <button onclick="document.getElementById('player').paused?document.getElementById('player').play():document.getElementById('player').pause()">📊</button>
+  <button onclick="prevNext(-1)">⏮</button>
+  <button class="playbig" id="btnPlay" onclick="togglePlay()">⏸</button>
+  <button onclick="prevNext(1)">⏭</button>
+</div>
+
+<div class="nav">
+  <div class="on"><span>🏠</span>Beranda</div>
+  <div onclick="cari()"><span>🧭</span>Jelajah</div>
+  <div onclick="showFav()"><span>🎵</span>Perpustakaan</div>
+  <div onclick="alert('Pengaturan')"><span>⚙️</span>Pengaturan</div>
+</div>
+
 <script>
-const WORKER="https://jeff-proxy.cobacoba12392apcb.workers.dev/";
-const ADMIN_WA="628xxxxxxxxxx"; // GANTI dengan nomor WhatsApp admin (format 62..., tanpa +)
-function ls(k,v){try{if(v===undefined)return localStorage.getItem(k);if(v===null)localStorage.removeItem(k);else localStorage.setItem(k,v)}catch(e){return null}}
-let token=ls("jeff_tok")||"",services=[],platform="all",picked=null,curDep=null;
-const rp=n=>"Rp"+Number(n).toLocaleString("id-ID");
-const $=id=>document.getElementById(id);
-
-const ICONS={
-all:'<svg viewBox="0 0 48 48"><defs><linearGradient id="gA" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#c084fc"/><stop offset="1" stop-color="#6324a6"/></linearGradient></defs><rect width="48" height="48" rx="12" fill="url(#gA)"/><path d="M24 11l3.6 8.4 9 .8-6.8 5.9 2 8.9L24 30.4l-7.8 4.6 2-8.9-6.8-5.9 9-.8z" fill="#fff"/></svg>',
-instagram:'<svg viewBox="0 0 48 48"><defs><linearGradient id="gI" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#feda75"/><stop offset=".3" stop-color="#fa7e1e"/><stop offset=".55" stop-color="#d62976"/><stop offset=".8" stop-color="#962fbf"/><stop offset="1" stop-color="#4f5bd5"/></linearGradient></defs><rect width="48" height="48" rx="12" fill="url(#gI)"/><rect x="11" y="11" width="26" height="26" rx="8" fill="none" stroke="#fff" stroke-width="3"/><circle cx="24" cy="24" r="6.5" fill="none" stroke="#fff" stroke-width="3"/><circle cx="31.5" cy="16.5" r="1.8" fill="#fff"/></svg>',
-tiktok:'<svg viewBox="0 0 48 48"><rect width="48" height="48" rx="12" fill="#000"/><g fill="none" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M26 11v20a5.5 5.5 0 1 1-5.5-5.5" stroke="#25f4ee" transform="translate(-1.5 -1)"/><path d="M26 11c.5 4 3 6.5 7.5 7" stroke="#25f4ee" transform="translate(-1.5 -1)"/><path d="M26 11v20a5.5 5.5 0 1 1-5.5-5.5" stroke="#fe2c55" transform="translate(1.5 1)"/><path d="M26 11c.5 4 3 6.5 7.5 7" stroke="#fe2c55" transform="translate(1.5 1)"/><path d="M26 11v20a5.5 5.5 0 1 1-5.5-5.5" stroke="#fff"/><path d="M26 11c.5 4 3 6.5 7.5 7" stroke="#fff"/></g></svg>',
-youtube:'<svg viewBox="0 0 48 48"><rect width="48" height="48" rx="12" fill="#fff"/><rect x="6" y="12" width="36" height="24" rx="8" fill="#f00"/><path d="M20 18v12l10-6z" fill="#fff"/></svg>',
-facebook:'<svg viewBox="0 0 48 48"><rect width="48" height="48" rx="12" fill="#1877f2"/><path d="M26.5 40V26h4.7l.8-5.6h-5.5v-3.6c0-1.6.6-2.8 2.9-2.8H32V9.1c-.5-.1-2.3-.3-4.3-.3-4.3 0-7.2 2.600-7.2 7.400v4.200H16V26h4.500v14z" fill="#fff"/></svg>',
-twitter:'<svg viewBox="0 0 48 48"><rect width="48" height="48" rx="12" fill="#000"/><path d="M12 11h7l17 26h-7z" fill="none" stroke="#fff" stroke-width="3" stroke-linejoin="round"/><path d="M35 11L13 37" stroke="#fff" stroke-width="3" stroke-linecap="round"/></svg>',
-telegram:'<svg viewBox="0 0 48 48"><defs><linearGradient id="gT" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#37aee2"/><stop offset="1" stop-color="#1e96c8"/></linearGradient></defs><rect width="48" height="48" rx="12" fill="url(#gT)"/><path d="M10.500 23.500l24-9.800c1.100-.4 2.100.3 1.700 2l-4 19c-.3 1.300-1.100 1.600-2.200 1l-6-4.400-2.900 2.800c-.3.300-.6.600-1.200.6l.4-6.200 11.300-10.200c.5-.4-.1-.7-.8-.3L16.800 26.700l-6-1.900c-1.300-.4-1.300-1.300.3-1.900z" fill="#fff"/></svg>',
-whatsapp:'<svg viewBox="0 0 48 48"><rect width="48" height="48" rx="12" fill="#25d366"/><path d="M24 10.500a13.500 13.500 0 0 0-11.600 20.400L10.500 37.500l6.800-1.800A13.500 13.500 0 1 0 24 10.500z" fill="none" stroke="#fff" stroke-width="3" stroke-linejoin="round"/><path d="M19.500 18.500c.5 4 4.500 8 9 9l2-2.200-3-1.600-1.400 1.200c-1.400-.6-2.600-1.800-3.200-3.200l1.200-1.400-1.600-3z" fill="#fff"/></svg>',
-spotify:'<svg viewBox="0 0 48 48"><rect width="48" height="48" rx="12" fill="#191414"/><circle cx="24" cy="24" r="15" fill="#1ed760"/><g fill="none" stroke="#191414" stroke-linecap="round"><path d="M15 19.500c6-1.800 12-1.200 18 1.500" stroke-width="3"/><path d="M16 25.500c5-1.400 10-1 14.500 1.500" stroke-width="2.600"/><path d="M17 31c4-1 8-.7 11.500 1.100" stroke-width="2.200"/></g></svg>'
-};
-const PLATS=[
- {id:"all",name:"Semua",re:/./},
- {id:"instagram",name:"Instagram",re:/instagram|\big\b/i},
- {id:"tiktok",name:"TikTok",re:/tiktok|tik tok/i},
- {id:"youtube",name:"YouTube",re:/youtube|\byt\b/i},
- {id:"facebook",name:"Facebook",re:/facebook|\bfb\b/i},
- {id:"twitter",name:"X / Twitter",re:/twitter|\bx\b|tweet/i},
- {id:"telegram",name:"Telegram",re:/telegram/i},
- {id:"whatsapp",name:"WhatsApp",re:/whatsapp/i},
- {id:"spotify",name:"Spotify",re:/spotify/i}
-];
-function buildPlats(){
- const root=document.getElementById("plats");root.innerHTML="";
- PLATS.forEach(p=>{
-  const b=document.createElement("button");
-  b.className="plat"+(p.id===platform?" on":"");
-  b.innerHTML=ICONS[p.id]+"<b></b>";
-  b.querySelector("b").textContent=p.name;
-  b.onclick=()=>{platform=p.id;buildPlats();renderServices()};
-  root.appendChild(b);
- });
+let player=document.getElementById('player');
+let songs=[]; let cur=0; let favs=JSON.parse(localStorage.getItem('jeff_fav')||'[]');
+async function load(q){
+  document.getElementById('list').innerHTML='<p style="color:#888;text-align:center;padding:20px">Nyari lagu...</p>';
+  try{
+    let r=await fetch('https://saavn.dev/api/search/songs?query='+encodeURIComponent(q));
+    let j=await r.json(); songs=j.data.results||[];
+    let html='';
+    songs.forEach((t,i)=>{
+      let img=t.image&&t.image[2]?t.image[2].url:'';
+      let art=t.artists&&t.artists.primary?t.artists.primary.map(a=>a.name).join(', '):'Unknown';
+      let url=t.downloadUrl?t.downloadUrl[t.downloadUrl.length-1].url:'';
+      html+=`<div class="item" onclick="playLagu(${i})"><img src="${img}"><div><b>${t.name}</b><p>${art}</p></div><div class="dot" onclick="event.stopPropagation();toggleFav(${i})">⋮</div></div>`;
+    });
+    document.getElementById('list').innerHTML=html||'<p style="color:#888;text-align:center">Gak ketemu</p>';
+  }catch(e){document.getElementById('list').innerHTML='<p style="color:#888;text-align:center;padding:20px">Server sibuk, refresh lagi</p>';}
 }
-
-
-async function call(action,data={}){
- let r;const ctl=new AbortController(),tm=setTimeout(()=>ctl.abort(),20000);
- try{r=await fetch(WORKER,{method:"POST",signal:ctl.signal,headers:Object.assign({"Content-Type":"application/json"},token?{Authorization:"Bearer "+token}:{}),body:JSON.stringify(Object.assign({action},data))})}
- catch(e){clearTimeout(tm);throw new Error(e.name==="AbortError"?"Server tidak merespons (timeout 20 detik).":"Tidak bisa terhubung ke server. Cek alamat Worker dan pastikan kode Worker sudah benar.")}
- clearTimeout(tm);
- const j=await r.json().catch(()=>({error:"Server membalas tapi bukan JSON (HTTP "+r.status+"). Kode Worker kemungkinan salah."}));
- if(!r.ok||j.error){if(r.status===401&&token)logout(true);throw new Error(j.error||"HTTP "+r.status)}
- return j;
+function playLagu(i){
+  cur=i; let t=songs[i]; if(!t) return;
+  let img=t.image[2].url; let art=t.artists.primary.map(a=>a.name).join(', ');
+  let url=t.downloadUrl[t.downloadUrl.length-1].url;
+  document.getElementById('mini').style.display='flex';
+  document.getElementById('mImg').src=img;
+  document.getElementById('mTitle').innerText=t.name;
+  document.getElementById('mArtist').innerText=art;
+  player.src=url; player.play(); document.getElementById('btnPlay').innerText='⏸';
 }
-async function doAuth(kind){
- const m=$("authMsg");m.style.color="#e3c8ff";m.textContent="Memproses...";
- ["btnLogin","btnReg"].forEach(i=>$(i).disabled=true);
- try{const j=await call(kind,{username:$("un").value,password:$("pw").value});token=j.token;ls("jeff_tok",token);$("pw").value="";m.textContent="";showApp()}
- catch(e){m.style.color="#fca5a5";m.textContent="⚠ "+e.message}
- ["btnLogin","btnReg"].forEach(i=>$(i).disabled=false);
-}
-async function checkServer(){
- const s=$("srv");let r;
- const bad=t=>{s.textContent="Server: "+t;s.style.color="#fca5a5"};
- try{r=await fetch(WORKER,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({action:"ping"})})}
- catch(e){return bad("TIDAK terhubung ❌ (alamat Worker salah, atau kode Worker belum benar)")}
- try{await r.json();s.textContent="Server: terhubung ✅";s.style.color="#86efac"}
- catch(e){bad("membalas tapi bukan JSON ❌ (kode Worker belum diganti)")}
-}
-function logout(auto){token="";ls("jeff_tok",null);$("appView").style.display="none";$("who").style.display="none";$("authView").style.display="block";if(auto)alert("Sesi habis, silakan login lagi.")}
-async function showApp(){
- $("authView").style.display="none";$("appView").style.display="block";$("who").style.display="block";
- buildPlats();await refreshMe();getServices();
-}
-async function refreshMe(){try{const m=await call("me");$("uname").textContent=m.username;$("balance").textContent=rp(m.balance)}catch(e){}}
-function tab(id,btn){
- document.querySelectorAll("section").forEach(x=>x.classList.remove("active"));$(id).classList.add("active");
- document.querySelectorAll("nav button").forEach(x=>x.classList.remove("active"));
- if(btn)btn.classList.add("active");else document.querySelectorAll("nav button").forEach(x=>{if(x.textContent===({services:"Suntik Sosmed",order:"Order",history:"Riwayat",deposit:"Deposit"})[id])x.classList.add("active")});
- if(id==="history")renderHistory();if(id==="deposit")renderDeposits();
-}
-async function getServices(){
- const root=$("catalog");root.textContent="Memuat layanan...";
- try{services=(await call("services")).list;renderServices()}
- catch(e){root.innerHTML="";const d=document.createElement("div");d.textContent="Gagal: "+e.message;root.appendChild(d);const b=document.createElement("button");b.className="primary";b.style.marginTop="12px";b.textContent="Coba Lagi";b.onclick=getServices;root.appendChild(b)}
-}
-function renderServices(){
- const root=$("catalog"),q=$("search").value.trim().toLowerCase(),p=PLATS.find(x=>x.id===platform);
- const list=services.filter(s=>{const h=(s.category||"")+" "+(s.name||"");return p.re.test(h)&&(!q||h.toLowerCase().includes(q))}).slice(0,100);
- root.innerHTML="";
- if(!list.length){root.textContent=services.length?"Tidak ada layanan yang cocok.":"Belum ada layanan.";return}
- list.forEach(s=>{const b=document.createElement("button");b.className="svc";const t=document.createElement("div");t.textContent="#"+s.service+" · "+s.name;const sm=document.createElement("small");sm.textContent=(s.category||"")+" · "+rp(s.rate)+"/1000 · min "+s.min+" · max "+s.max;b.append(t,sm);b.onclick=()=>{$("serviceId").value=s.service;syncPick();tab("order")};root.appendChild(b)});
-}
-function syncPick(){
- picked=services.find(s=>String(s.service)===$("serviceId").value.trim())||null;
- $("picked").textContent=picked?"#"+picked.service+" · "+picked.name+" — min "+picked.min+", max "+picked.max:"Pilih layanan dari menu Suntik Sosmed.";
- $("qtyLabel").textContent=picked?"Jumlah (min "+picked.min+" / max "+picked.max+")":"Jumlah";calcPrice();
-}
-function calcPrice(){const q=Number($("quantity").value);$("price").textContent=picked&&q?"Harga: "+rp(Math.ceil(picked.rate*q/1000)):""}
-async function createOrder(){
- const service=$("serviceId").value.trim(),link=$("target").value.trim(),quantity=$("quantity").value;
- if(!service||!link||!quantity)return alert("Lengkapi semua data.");
- const btn=$("orderBtn");btn.disabled=true;btn.textContent="Mengirim...";
- try{const r=await call("order",{service,link,quantity});alert("Order berhasil! ID: "+r.order+" · "+rp(r.price));$("target").value="";$("quantity").value="";calcPrice();refreshMe();tab("history")}
- catch(e){alert(e.message)}
- btn.disabled=false;btn.textContent="Kirim Pesanan";
-}
-async function renderHistory(){
- const root=$("historyList");
- try{const l=(await call("orders")).list;root.innerHTML="";if(!l.length){root.textContent="Belum ada order.";return}
-  l.forEach(o=>{const d=document.createElement("div");d.className="item";const a=document.createElement("div");a.textContent="#"+o.provider_order+" · "+o.name;const s=document.createElement("small");s.textContent=o.quantity+" · "+o.link+" · "+rp(o.price);const b=document.createElement("div");b.innerHTML='<span class="badge"></span>';b.firstChild.textContent=o.status;d.append(a,s,b);root.appendChild(d)});refreshMe()}
- catch(e){root.textContent="Gagal: "+e.message}
-}
-let pollT=null;
-async function makeDeposit(){
- try{const r=await call("deposit_create",{amount:$("depAmount").value});curDep=r;
-  $("depTotal").textContent=rp(r.total);
-  $("depCode").textContent=r.auto?"Scan QRIS — saldo masuk otomatis · ID D"+r.id:"Nominal "+rp(r.amount)+" + kode unik "+r.code+" · ID D"+r.id;
-  $("manualQ").style.display=r.auto?"none":"block";$("waBtn").style.display=r.auto?"none":"block";
-  const q=$("qrBox");q.innerHTML="";q.style.display="none";
-  if(r.auto){
-   if(window.QRCode){q.style.display="inline-block";new QRCode(q,{text:r.qr,width:230,height:230})}
-   else{q.style.display="block";q.style.color="#000";q.style.wordBreak="break-all";q.style.fontSize="11px";q.textContent=r.qr}
-   startPoll(r.id);
-  }
-  $("depBox").style.display="block";renderDeposits()}
- catch(e){alert(e.message)}
-}
-function startPoll(id){
- clearInterval(pollT);let n=0;
- pollT=setInterval(async()=>{
-  if(++n>150){clearInterval(pollT);return}
-  try{const r=await call("deposit_check",{id});
-   if(r.status==="confirmed"){clearInterval(pollT);$("depBox").style.display="none";alert("Pembayaran diterima! Saldo bertambah.");refreshMe();renderDeposits()}}catch(e){}
- },6000);
-}
-function confirmWA(){
- if(!curDep)return;if(ADMIN_WA.includes("x"))return alert("Nomor WhatsApp admin belum diisi (ADMIN_WA).");
- window.open("https://wa.me/"+ADMIN_WA+"?text="+encodeURIComponent("Halo admin, saya sudah deposit.\nID: D"+curDep.id+"\nUsername: "+$("uname").textContent+"\nTotal: "+rp(curDep.total)),"_blank");
-}
-async function renderDeposits(){
- const root=$("depList");
- try{const l=(await call("deposits")).list;root.innerHTML="";if(!l.length){root.textContent="Belum ada.";return}
-  l.forEach(d=>{const e=document.createElement("div");e.className="item";e.textContent="D"+d.id+" · "+rp(d.total)+" · "+(d.status==="confirmed"?"Berhasil ✅":"Menunggu");root.appendChild(e)})}
- catch(e){root.textContent="Gagal: "+e.message}
-}
-checkServer();
-if(token)showApp();
-</script></body></html>
+function togglePlay(){ if(player.paused){player.play();document.getElementById('btnPlay').innerText='⏸';} else {player.pause();document.getElementById('btnPlay').innerText='▶';} }
+function prevNext(d){ let n=cur+d; if(n<0)n=songs.length-1; if(n>=songs.length)n=0; playLagu(n); }
+function cari(){ let q=document.getElementById('q').value||'viral'; load(q); }
+function quick(n){ document.getElementById('q').value=n; load(n); }
+function toggleFav(i){ alert('Ditambah ke Favorit ⭐'); }
+function showFav(){ alert('Favorit kamu: '+favs.length+' lagu. Klik lagu untuk tambah favorit!'); }
+player.onended=()=>prevNext(1);
+load('ONE PIECE');
+</script>
+</body>
+</html>
