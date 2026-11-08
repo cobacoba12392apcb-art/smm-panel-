@@ -154,7 +154,7 @@ nav button.on svg{filter:drop-shadow(0 0 6px #1ed76088)}
 #fp.o{transform:none}
 #fp .top{display:flex;justify-content:space-between;align-items:center;font-weight:700}
 #fp .cv{flex:1;display:grid;place-items:center;padding:20px 0}
-#ytw{position:fixed;left:-400px;top:0;width:220px;height:220px;opacity:0;pointer-events:none;overflow:hidden;z-index:-1;visibility:visible}
+#ytw{position:fixed;left:-400px;top:0;width:220px;height:220px;opacity:0;pointer-events:none;overflow:hidden}
 #ytw iframe{width:100%;height:100%;border:0;display:block}
 #fp .cv img{width:100%;max-width:320px;aspect-ratio:1;border-radius:12px;object-fit:cover;box-shadow:0 20px 50px #000b;background:#222}
 .ti{display:flex;align-items:center;gap:12px}.ti div{flex:1;min-width:0}
@@ -609,7 +609,7 @@ const au=(function(){
   o._busy=true;
   const init=()=>{
    try{
-    o._p=new YT.Player('ytp',{width:'100%',height:'100%',playerVars:{playsinline:1,rel:0,modestbranding:1,controls:0,disablekb:1,fs:0,iv_load_policy:3,cc_load_policy:0},events:{
+    o._p=new YT.Player('ytp',{width:'100%',height:'100%',playerVars:{playsinline:1,rel:0,modestbranding:1,controls:1},events:{
      onReady:()=>{o._ready=true;o._busy=false;if(o._pend){const v=o._pend;o._pend='';try{o._p.loadVideoById(v)}catch(e){}}},
      onStateChange:e=>{
       const s=e&&e.data;
@@ -989,6 +989,8 @@ ui();restartBanner();loadTrend();
  /* buka kunci audio saat sentuhan pertama (wajib di iOS) */
  const ev=['pointerdown','touchend','click','keydown'];
  function unlock(){
+  /* siapkan pemutar YouTube lebih awal supaya lagu pertama langsung mau diputar */
+  try{if(!au._p&&!au._busy&&!au._ready)au.src=''}catch(e){}
   try{const p=ka.play();if(p&&p.then)p.then(()=>{if(!want)ka.pause()}).catch(()=>{})}catch(e){}
   ev.forEach(x=>document.removeEventListener(x,unlock,true));
  }
