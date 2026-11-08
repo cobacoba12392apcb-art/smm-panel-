@@ -49,12 +49,12 @@ svg{display:block}
 .bs h3{font-size:clamp(15px,4.8vw,20px);font-weight:800;display:flex;gap:8px;align-items:center;white-space:nowrap}
 .bs h3 span{color:var(--g)}
 .bs h3 svg{width:30px;height:30px;flex:none}
-.bs p{margin:6px 0 9px;font-size:15px;color:#eef3f0}
+.bs p{margin:6px 0 9px;font-size:14px;color:#eef3f0}
 .bs ul{list-style:none;display:grid;gap:6px;font-size:14px;color:#e3e9e5}
 .bs li{display:flex;gap:9px;align-items:center}
 .ck{width:20px;height:20px;border-radius:50%;background:linear-gradient(#6bff9f,#14b64e);display:grid;place-items:center;flex:none;box-shadow:0 0 9px #1ed76088,inset 0 1px 0 #ffffff80}
 .ck svg{width:12px;height:12px;stroke:#04200e;stroke-width:3.4}
-.up{margin-top:13px;display:inline-flex;align-items:center;gap:8px;background:linear-gradient(#5aff95,#1ed760 55%,#12a94a);color:#032a12;font-weight:800;font-size:15px;padding:10px 18px;border-radius:30px;box-shadow:0 6px 16px #1ed76055,inset 0 1px 0 #ffffffaa}
+.up{margin-top:13px;display:inline-flex;align-items:center;gap:8px;white-space:nowrap;background:linear-gradient(#5aff95,#1ed760 55%,#12a94a);color:#032a12;font-weight:800;font-size:15px;padding:10px 16px;border-radius:30px;box-shadow:0 6px 16px #1ed76055,inset 0 1px 0 #ffffffaa}
 .up svg{width:16px;height:16px;stroke-width:3}
 .up:active{transform:scale(.96)}
 .bs .art{position:absolute;right:-4px;top:50%;transform:translateY(-50%);width:44%;max-width:210px;z-index:1;filter:drop-shadow(0 12px 16px #000d) drop-shadow(0 0 22px #1ed76066)}
@@ -78,12 +78,12 @@ svg{display:block}
 
 /* genre */
 .gg{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.gc{height:108px;border-radius:14px;padding:14px;text-align:left;display:flex;flex-direction:column;justify-content:flex-end;position:relative;overflow:hidden;box-shadow:inset 0 1px 0 #ffffff44,inset 0 0 0 1px #ffffff22,0 8px 16px #000a}
-.gc i{position:absolute;top:8px;left:12px;width:52px;height:52px}
+.gc{height:124px;border-radius:14px;padding:14px;text-align:left;display:flex;flex-direction:column;justify-content:flex-end;position:relative;overflow:hidden;box-shadow:inset 0 1px 0 #ffffff44,inset 0 0 0 1px #ffffff22,0 8px 16px #000a}
+.gc i{position:absolute;top:10px;left:12px;width:54px;height:54px}
 .gc i svg{width:100%;height:100%;filter:drop-shadow(0 6px 5px #0009)}
 .gc:after{content:"";position:absolute;inset:0;background:radial-gradient(120% 80% at 0% 0%,#ffffff33,transparent 55%);pointer-events:none}
 .gc b{font-size:19px;font-weight:700;letter-spacing:-.5px;text-shadow:0 1px 6px #0004}
-.gc span{font-size:14px;color:#ffffffcc}
+.gc span{font-size:14px;color:#ffffffcc;max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .gc:active{transform:scale(.97)}
 
 /* rows */
@@ -382,7 +382,7 @@ input[type=range]::-moz-range-thumb{width:14px;height:14px;border:0;border-radiu
 
 <symbol id="g-guitar" viewBox="0 0 64 64">
  <ellipse cx="34" cy="61" rx="18" ry="2.500" fill="#000" fill-opacity=".3"/>
- <g transform="rotate(32 32 32) translate(3.500 1) scale(.9)">
+ <g transform="translate(32 32) rotate(35) scale(.93) translate(-32 -31)">
   <rect x="28" y="1" width="8" height="10" rx="2" fill="url(#gDark)"/>
   <rect x="29.500" y="8" width="5" height="32" fill="url(#gWood)" stroke="#3a1a08" stroke-width=".6"/>
   <path d="M32 36 C20 30 10 40 16 50 C20 61 44 61 48 50 C54 40 44 30 32 36Z" fill="url(#gRedL)" stroke="#6a0a10" stroke-width="1.500" stroke-linejoin="round"/>
@@ -402,7 +402,7 @@ input[type=range]::-moz-range-thumb{width:14px;height:14px;border:0;border-radiu
 
 <symbol id="g-banjo" viewBox="0 0 64 64">
  <ellipse cx="34" cy="61" rx="18" ry="2.500" fill="#000" fill-opacity=".3"/>
- <g transform="rotate(-32 32 32) translate(3 1) scale(.9)">
+ <g transform="translate(32 32) rotate(-35) scale(.93) translate(-32 -31)">
   <rect x="28.500" y="1" width="7" height="10" rx="2" fill="url(#gDark)"/>
   <rect x="30" y="8" width="4" height="32" fill="url(#gDark)"/>
   <ellipse cx="32" cy="39" rx="12" ry="10" fill="url(#gWood)" stroke="#4a2209" stroke-width="1.500"/>
@@ -526,7 +526,7 @@ input[type=range]::-moz-range-thumb{width:14px;height:14px;border:0;border-radiu
 
  <div id="mini">
   <img id="mi" alt="">
-  <div class="t" id="mt"><b id="mb">Belum ada lagu</b><small id="ms">Ketuk putar untuk mulai</small></div>
+  <div class="t" id="mt"><b id="mb">Pilih lagu</b><small id="ms">Ketuk putar</small></div>
   <div class="eq" aria-hidden="true"><i></i><i></i><i></i></div>
   <span class="vl"></span>
   <button class="ib" id="mv" aria-label="Sebelumnya"><svg class="ic" viewBox="0 0 24 24"><path class="f" d="M18 5v14L8 12z"/><path d="M5.500 5v14" stroke-width="2.600"/></svg></button>
@@ -586,8 +586,9 @@ const GEN=[
  {n:'Barat',s:'Top hits internasional',e:'g-globe',q:'top english hits',c:'linear-gradient(135deg,#2a8fd0,#143a7a)'}
 ];
 const FLT=[['Semua',''],['Indonesia','indonesia'],['Barat','english'],['K-Pop','kpop'],['Dangdut','dangdut'],['Lofi','lofi'],['Akustik','akustik'],['Rock','rock'],['Hip-hop','hip hop']];
-const S={q:[],i:-1,cur:null,sh:false,rp:false,likes:[],view:'home',prev:'home',trend:null,ql:2,flt:''};
+const S={q:[],i:-1,cur:null,sh:false,rp:false,likes:[],view:'home',prev:'home',trend:null,ql:2,flt:'',sp:true,rs:0,skipN:0};
 const L={},au=new Audio();au.preload='auto';
+try{const v=localStorage.getItem('jm_sp');if(v!==null)S.sp=v==='1'}catch(e){}
 try{S.likes=JSON.parse(localStorage.getItem('jm_likes')||'[]')}catch(e){}
 try{const q=parseInt(localStorage.getItem('jm_ql'),10);if(q>=0&&q<=2)S.ql=q}catch(e){}
 const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -604,23 +605,135 @@ function pickUrl(t){
  return u[S.ql===0?Math.min(2,n-1):S.ql===1?Math.min(3,n-1):n-1];
 }
 /* data */
-async function songs(q,n){
- const r=await fetch('https://saavn.dev/api/search/songs?limit='+(n||20)+'&query='+encodeURIComponent(q));
- if(!r.ok)throw new Error('http');
+/* data: beberapa server, yang tercepat menang; cadangan terakhir iTunes (preview 30 detik) */
+const CACHE={},RT={};
+const PROV=[
+ {n:'saavn.dev',u:(q,n)=>'https://saavn.dev/api/search/songs?limit='+n+'&query='+encodeURIComponent(q)},
+ {n:'saavn.me',u:(q,n)=>'https://saavn.me/search/songs?limit='+n+'&query='+encodeURIComponent(q)},
+ {n:'saavn-vercel',u:(q,n)=>'https://jiosaavn-api-privatecvc2.vercel.app/search/songs?limit='+n+'&query='+encodeURIComponent(q)}
+];
+function tmo(url,ms,opt){
+ let c=null,t=null;
+ if(typeof AbortController!=='undefined'){c=new AbortController();t=setTimeout(()=>c.abort(),ms)}
+ return fetch(url,Object.assign({},opt||{},c?{signal:c.signal}:{})).then(r=>{clearTimeout(t);return r},e=>{clearTimeout(t);throw e});
+}
+const https=u=>String(u||'').replace(/^http:\/\//i,'https://');
+function lastImg(x){
+ if(!x)return '';
+ if(typeof x==='string')return https(x);
+ if(Array.isArray(x)&&x.length){const i=x[x.length-1];return https(typeof i==='string'?i:(i.url||i.link||''))}
+ return '';
+}
+function mapSaavn(t){
+ try{
+  const urls=Array.isArray(t.downloadUrl)?t.downloadUrl.map(d=>https(typeof d==='string'?d:(d.url||d.link))).filter(Boolean):[];
+  let ar='Unknown';
+  if(t.artists&&t.artists.primary&&t.artists.primary.length)ar=t.artists.primary.map(a=>dec(a.name)).join(', ');
+  else if(typeof t.primaryArtists==='string'&&t.primaryArtists)ar=dec(t.primaryArtists);
+  else if(typeof t.artist==='string'&&t.artist)ar=dec(t.artist);
+  return{id:String(t.id),title:dec(t.name||t.title),artist:ar,img:lastImg(t.image),url:urls[urls.length-1]||'',urls:urls,dur:+t.duration||0};
+ }catch(e){return null}
+}
+async function fetchSaavn(p,q,n){
+ let r;
+ try{r=await tmo(p.u(q,n),9000)}
+ catch(e){throw new Error(p.n+': '+(e&&e.name==='AbortError'?'tidak merespons (timeout)':(e&&e.message)||'gagal terhubung'))}
+ if(!r.ok)throw new Error(p.n+': HTTP '+r.status);
+ let j;
+ try{j=await r.json()}catch(e){throw new Error(p.n+': respons bukan JSON')}
+ const raw=j&&j.data&&(Array.isArray(j.data.results)?j.data.results:Array.isArray(j.data)?j.data:null);
+ if(!raw)throw new Error(p.n+': format respons tidak dikenal');
+ return raw.map(mapSaavn).filter(t=>t&&t.url);
+}
+async function fetchItunes(q,n){
+ let r;
+ try{r=await tmo('https://itunes.apple.com/search?media=music&entity=song&country=ID&limit='+n+'&term='+encodeURIComponent(q),9000)}
+ catch(e){throw new Error('iTunes: '+(e&&e.name==='AbortError'?'timeout':(e&&e.message)||'gagal terhubung'))}
+ if(!r.ok)throw new Error('iTunes: HTTP '+r.status);
  const j=await r.json();
- return (j.data&&j.data.results||[]).map(t=>{
-  const im=t.image&&t.image.length?t.image[t.image.length-1].url:'';
-  const urls=(t.downloadUrl||[]).map(d=>d.url).filter(Boolean);
-  const ar=t.artists&&t.artists.primary&&t.artists.primary.length?t.artists.primary.map(a=>dec(a.name)).join(', '):'Unknown';
-  return{id:String(t.id),title:dec(t.name),artist:ar,img:im,url:urls[urls.length-1]||'',urls:urls,dur:+t.duration||0};
- }).filter(t=>t.url);
+ return (j.results||[]).filter(t=>t.previewUrl).map(t=>({id:'it'+t.trackId,title:t.trackName||'-',artist:t.artistName||'Unknown',img:https((t.artworkUrl100||'').replace('100x100','600x600')),url:https(t.previewUrl),urls:[https(t.previewUrl)],dur:30,preview:true}));
+}
+function firstOk(ps){
+ return new Promise((res,rej)=>{
+  let left=ps.length,empty=false;const errs=[];
+  const done=()=>{if(--left===0){empty?res([]):rej(new Error(errs.join(' | ')))}};
+  ps.forEach(p=>p.then(v=>{if(v.length)res(v);else{empty=true;done()}},e=>{errs.push(e&&e.message||String(e));done()}));
+ });
+}
+async function songs(q,n){
+ n=n||20;
+ const key=q+'|'+n;
+ if(CACHE[key])return CACHE[key];
+ let list;
+ try{list=await firstOk(PROV.map(p=>fetchSaavn(p,q,n)))}
+ catch(e1){
+  try{
+   list=await fetchItunes(q,n);
+   if(list.length&&!S.pvWarn){S.pvWarn=true;toast('Server utama gangguan, memakai mode preview 30 detik')}
+  }catch(e2){throw new Error(e1.message+' | '+e2.message)}
+ }
+ if(list.length)CACHE[key]=list;
+ return list;
+}
+/* Spotify: katalog pencarian (audio tetap diambil dari sumber lain). Gagal apa pun -> otomatis kembali ke cara biasa. */
+const SPOT={id:'dae9e289100e4f1eb544010a94bc6eee',secret:'c674e9a1ca964fa4a18f31e79bd77469',tok:'',exp:0,off:0};
+async function spToken(){
+ if(SPOT.tok&&Date.now()<SPOT.exp)return SPOT.tok;
+ const r=await tmo('https://accounts.spotify.com/api/token',6000,{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded','Authorization':'Basic '+btoa(SPOT.id+':'+SPOT.secret)},body:'grant_type=client_credentials'});
+ if(!r.ok)throw new Error('Spotify token HTTP '+r.status);
+ const j=await r.json();
+ if(!j.access_token)throw new Error('Spotify token kosong');
+ SPOT.tok=j.access_token;SPOT.exp=Date.now()+Math.max(60,(j.expires_in||3600)-60)*1000;
+ return SPOT.tok;
+}
+function mapSpotify(i){
+ try{
+  const im=i.album&&i.album.images&&i.album.images.length?i.album.images[0].url:'';
+  return{id:'sp'+i.id,title:i.name,artist:(i.artists||[]).map(a=>a.name).join(', ')||'Unknown',img:https(im),url:'',urls:[],dur:Math.round((i.duration_ms||0)/1000),lazy:true};
+ }catch(e){return null}
+}
+async function fetchSpotify(q,n){
+ if(Date.now()<SPOT.off)throw new Error('Spotify dilewati sementara');
+ try{
+  const tok=await spToken();
+  const go=async lim=>tmo('https://api.spotify.com/v1/search?type=track&limit='+lim+'&market=ID&q='+encodeURIComponent(q),6000,{headers:{Authorization:'Bearer '+tok}});
+  let r=await go(Math.min(n,20));
+  if(r.status===400)r=await go(10);
+  if(r.status===401){SPOT.tok='';throw new Error('Spotify token ditolak')}
+  if(!r.ok)throw new Error('Spotify HTTP '+r.status);
+  const j=await r.json();
+  return ((j.tracks&&j.tracks.items)||[]).map(mapSpotify).filter(t=>t&&t.title);
+ }catch(e){SPOT.off=Date.now()+60000;throw e}
+}
+async function searchTracks(q,n){
+ if(S.sp){try{const l=await fetchSpotify(q,n);if(l.length)return l}catch(e){}}
+ return songs(q,n);
+}
+const norm=s=>String(s||'').toLowerCase().replace(/\(.*?\)|\[.*?\]/g,'').replace(/[^a-z0-9]/g,'');
+async function resolveAudio(t){
+ if(t.url)return true;
+ const a1=String(t.artist||'').split(',')[0];
+ const q=(t.title+' '+a1).trim();
+ let list=[];
+ try{list=await firstOk(PROV.map(p=>fetchSaavn(p,q,6)))}catch(e){}
+ if(!list.length){try{list=await fetchItunes(q,6)}catch(e){}}
+ const nt=norm(t.title),na=norm(a1);
+ const m=list.find(x=>norm(x.title)===nt)||list.find(x=>nt&&(norm(x.title).indexOf(nt)>=0||nt.indexOf(norm(x.title))>=0&&norm(x.title).length>2))||list.find(x=>na&&norm(x.artist).indexOf(na)>=0);
+ if(!m)return false;
+ t.url=m.url;t.urls=m.urls;if(m.preview)t.preview=true;
+ return true;
+}
+function failHtml(id,fn,e,title){
+ RT[id]=fn;
+ let d=String(e&&e.message||e||'');
+ if(typeof navigator!=='undefined'&&navigator.onLine===false)d='Perangkat sedang offline. '+d;
+ return '<div class="msg"><b>'+(title||'Gagal memuat lagu')+'</b>Periksa koneksi internetmu lalu coba lagi.<small style="display:block;margin-top:10px;color:#6f7872;font-size:12px;word-break:break-word">'+esc(d.slice(0,260))+'</small><button data-rt="'+id+'">Coba lagi</button></div>';
 }
 function rows(list,key){
  L[key]=list;
  return list.map((t,i)=>'<div class="row'+(S.cur&&S.cur.id===t.id?' on':'')+'" data-c="'+key+'" data-i="'+i+'"><img loading="lazy" src="'+esc(t.img||PH)+'" alt=""><div class="inf"><b>'+esc(t.title)+'</b><p>'+esc(t.artist)+(t.dur?' • '+fmt(t.dur):'')+'</p></div><button class="dots" data-m="'+key+':'+i+'" aria-label="Opsi">'+IC.dots+'</button></div>').join('');
 }
 const spin='<div class="sp"></div>';
-const fail=(fn)=>'<div class="msg"><b>Gagal memuat lagu</b>Periksa koneksi internetmu lalu coba lagi.<br><button data-r="'+fn+'">Coba lagi</button></div>';
 /* views */
 function gcards(a){return a.map(g=>'<button class="gc" data-g="'+GEN.indexOf(g)+'" style="background:'+g.c+'"><i><svg viewBox="0 0 64 64"><use href="#'+g.e+'" xlink:href="#'+g.e+'"/></svg></i><b>'+g.n+'</b><span>'+g.s+'</span></button>').join('')}
 function go(v){
@@ -641,14 +754,14 @@ async function loadTrend(){
   if(!l.length)l=await songs('Bernadya',20);
   S.trend=l;L.trAll=l;
   $('#tr').innerHTML=l.length?rows(l.slice(0,5),'tr'):'<div class="msg">Belum ada lagu.</div>';
- }catch(e){$('#tr').innerHTML=fail('trend')}
+ }catch(e){$('#tr').innerHTML=failHtml('trend',loadTrend,e)}
 }
 async function openList(title,fn,key){
  $('#lt').textContent=title;$('#lb').innerHTML=spin;go('list');
  try{
   const l=await fn();
   $('#lb').innerHTML=l.length?rows(l,key):'<div class="msg"><b>Tidak ada hasil</b>Coba kata kunci lain.</div>';
- }catch(e){$('#lb').innerHTML='<div class="msg"><b>Gagal memuat lagu</b>Periksa koneksi internetmu lalu coba lagi.</div>'}
+ }catch(e){$('#lb').innerHTML=failHtml('list',()=>openList(title,fn,key),e)}
 }
 function renderKoleksi(){
  $('#kb').innerHTML=S.likes.length?rows(S.likes,'likes'):'<div class="msg"><b>Koleksimu masih kosong</b>Tekan ikon hati pada lagu untuk menyimpannya di sini.<br><button data-v="search">Cari lagu</button></div>';
@@ -667,6 +780,7 @@ function renderSettings(){
  '<div class="set">'+
   '<button class="sr" data-t="sh"><span>Acak<small>Putar lagu secara acak</small></span><i class="sw'+(S.sh?' on':'')+'"></i></button>'+
   '<button class="sr" data-t="rp"><span>Ulangi lagu<small>Putar ulang lagu yang sama</small></span><i class="sw'+(S.rp?' on':'')+'"></i></button>'+
+  '<button class="sr" data-t="sp"><span>Cari lewat Spotify<small>Katalog dari Spotify, audio dari sumber lain</small></span><i class="sw'+(S.sp?' on':'')+'"></i></button>'+
  '</div>'+
  '<div class="sl">Lainnya</div>'+
  '<div class="set">'+
@@ -682,16 +796,16 @@ async function doSearch(v){
  $('#gall').hidden=true;$('#res').hidden=false;$('#res').innerHTML=spin;
  const my=++sSeq;
  try{
-  const l=await songs(v+(S.flt?' '+S.flt:''),25);if(my!==sSeq)return;
+  const l=await searchTracks(v+(S.flt?' '+S.flt:''),25);if(my!==sSeq)return;
   $('#res').innerHTML=l.length?rows(l,'s'):'<div class="msg"><b>Tidak ada hasil untuk "'+esc(v)+'"</b>Periksa ejaan atau coba kata kunci lain.</div>';
- }catch(e){if(my===sSeq)$('#res').innerHTML='<div class="msg"><b>Pencarian gagal</b>Periksa koneksi internetmu lalu coba lagi.</div>'}
+ }catch(e){if(my===sSeq)$('#res').innerHTML=failHtml('search',()=>doSearch(v),e,'Pencarian gagal')}
 }
 /* player */
 function ui(){
  const t=S.cur,p=!au.paused&&!!t;
  $('#mini').classList.toggle('pl',p);
  $('#mpp').innerHTML=p?IC.pause:IC.play;$('#fpp').innerHTML=p?IC.pause:IC.play;
- if(!t){setSrc($('#mi'),PH);$('#mb').textContent='Belum ada lagu';$('#ms').textContent='Ketuk putar untuk mulai';return}
+ if(!t){setSrc($('#mi'),PH);$('#mb').textContent='Pilih lagu';$('#ms').textContent='Ketuk putar';return}
  setSrc($('#mi'),t.img);setSrc($('#fi'),t.img);
  $('#mb').textContent=t.title;$('#ms').textContent=t.artist;
  $('#ft').textContent=t.title;$('#fa').textContent=t.artist;
@@ -699,9 +813,19 @@ function ui(){
  document.title=t.title+' · JEFF MUSIC';
  $$('.row').forEach(r=>{const a=L[r.dataset.c];r.classList.toggle('on',!!(a&&a[r.dataset.i]&&a[r.dataset.i].id===t.id))});
 }
+function startAudio(t){S.skipN=0;au.src=pickUrl(t);au.play().catch(()=>toast('Tekan tombol putar untuk memulai'));ui()}
 function playCur(){
- const t=S.q[S.i];if(!t)return;S.cur=t;au.src=pickUrl(t);
- au.play().catch(()=>toast('Tekan tombol putar untuk memulai'));ui();
+ const t=S.q[S.i];if(!t)return;
+ S.cur=t;
+ if(t.url){S.rs++;startAudio(t);return}
+ const my=++S.rs;au.pause();ui();toast('Mencari audio lagu...');
+ resolveAudio(t).then(found=>{
+  if(my!==S.rs)return;
+  if(found){startAudio(t);return}
+  if(++S.skipN>=3||S.q.length<2){S.skipN=0;toast('Audio lagu ini tidak ditemukan');ui();return}
+  toast('Audio tidak ditemukan, lanjut ke lagu berikutnya');
+  setTimeout(()=>{if(my===S.rs)next()},700);
+ });
 }
 function playFrom(key,i){const l=L[key];if(!l)return;S.q=l.slice();S.i=i;playCur()}
 function startDefault(){
@@ -713,10 +837,13 @@ function next(){if(!S.q.length){startDefault();return}S.i=S.sh?Math.floor(Math.r
 function prev(){if(!S.q.length){startDefault();return}if(au.currentTime>3){au.currentTime=0;return}S.i=(S.i-1+S.q.length)%S.q.length;playCur()}
 function toggle(){if(!S.cur){startDefault();return}au.paused?au.play().catch(()=>{}):au.pause()}
 function setSh(){S.sh=!S.sh;$('#bsh').classList.toggle('on',S.sh);toast(S.sh?'Acak aktif':'Acak mati');if(S.view==='settings')renderSettings()}
+function setSp(){S.sp=!S.sp;try{localStorage.setItem('jm_sp',S.sp?'1':'0')}catch(e){}toast(S.sp?'Pencarian lewat Spotify aktif':'Pencarian lewat Spotify mati');if(S.view==='settings')renderSettings()}
 function setRp(){S.rp=!S.rp;$('#brp').classList.toggle('on',S.rp);toast(S.rp?'Ulangi lagu aktif':'Ulangi lagu mati');if(S.view==='settings')renderSettings()}
 au.addEventListener('play',ui);au.addEventListener('pause',ui);
 au.addEventListener('ended',()=>{if(S.rp){au.currentTime=0;au.play()}else if(S.sh||S.i<S.q.length-1)next();else ui()});
-au.addEventListener('error',()=>{if(S.cur){toast('Lagu tidak bisa diputar, lanjut ke berikutnya');setTimeout(next,800)}});
+let errN=0;
+au.addEventListener('playing',()=>{errN=0});
+au.addEventListener('error',()=>{if(!S.cur)return;if(++errN>=3){errN=0;toast('Lagu tidak bisa diputar. Periksa koneksi internet.');ui();return}toast('Lagu tidak bisa diputar, lanjut ke berikutnya');setTimeout(next,800)});
 let drag=false;
 au.addEventListener('timeupdate',()=>{
  const d=au.duration||S.cur&&S.cur.dur||0,p=au.currentTime;if(!d)return;
@@ -787,7 +914,7 @@ document.addEventListener('click',e=>{
  }
  const x=T.closest('[data-x]');
  if(x){const a=x.dataset.x;if(a==='bell')openBell();else if(a==='user')openUser();else if(a==='about')openAbout();else if(a==='clear')clearLikes();return}
- const tg=T.closest('[data-t]');if(tg){tg.dataset.t==='sh'?setSh():setRp();return}
+ const tg=T.closest('[data-t]');if(tg){const k=tg.dataset.t;k==='sh'?setSh():k==='sp'?setSp():setRp();return}
  const ql=T.closest('[data-ql]');if(ql){S.ql=+ql.dataset.ql;try{localStorage.setItem('jm_ql',S.ql)}catch(er){}renderSettings();toast('Kualitas audio: '+['Rendah','Sedang','Tinggi'][S.ql]+' (berlaku di lagu berikutnya)');return}
  const qa=T.closest('[data-qa]');
  if(qa){
@@ -813,7 +940,7 @@ document.addEventListener('click',e=>{
   else if(y==='back')go(S.prev);
   return;
  }
- const r=T.closest('[data-r]');if(r){loadTrend();return}
+ const rt=T.closest('[data-rt]');if(rt){const f=RT[rt.dataset.rt];if(f)f();return}
  const row=T.closest('.row[data-c]');if(row){playFrom(row.dataset.c,+row.dataset.i)}
 });
 $('#ov').onclick=closeAll;
