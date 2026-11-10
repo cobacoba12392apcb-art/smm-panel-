@@ -199,7 +199,10 @@ input[type=range]::-moz-range-thumb{width:14px;height:14px;border:0;border-radiu
 #fp.ly #lyr{display:block}
 #fp.ly .cv img{display:none}
 #fp.ly .cv{display:block;padding:8px 0}
-#fl.on{color:var(--g)}
+.seg{display:flex;background:#ffffff1c;border-radius:24px;height:46px}
+.seg button{min-width:106px;padding:0 20px;font-size:14px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;color:#ffffff90;border-radius:24px;transition:background .2s,color .2s}
+.seg button.on{background:#ffffff30;color:#fff}
+#app.fpm #ov{z-index:44}#app.fpm #sheet{z-index:45}
 .lw{padding:30% 4px}
 .lw p{font-size:23px;font-weight:800;line-height:1.35;margin:0 0 18px;color:#fff;letter-spacing:-.3px}
 .lw.sy p{color:#ffffff55;cursor:pointer;transition:color .25s,transform .25s;transform-origin:center}
@@ -567,10 +570,10 @@ input[type=range]::-moz-range-thumb{width:14px;height:14px;border:0;border-radiu
  <div class="ov" id="ov"></div>
  <div id="sheet"></div>
  <div id="fp">
-  <div class="top"><button class="ib" id="fc" aria-label="Tutup"><svg class="ic" viewBox="0 0 24 24"><path d="m5 9 7 7 7-7"/></svg></button><span>Sedang diputar</span><span style="width:42px"></span></div>
+  <div class="top"><button class="ib" id="fc" aria-label="Tutup"><svg class="ic" viewBox="0 0 24 24"><path d="m5 9 7 7 7-7"/></svg></button><div class="seg" role="tablist"><button id="fs" class="on" role="tab" aria-selected="true">Sampul</button><button id="fl" role="tab" aria-selected="false">Lirik</button></div><button class="ib" id="fm" aria-label="Menu lagu"><svg class="ic" viewBox="0 0 24 24"><circle class="f" cx="12" cy="5" r="2"/><circle class="f" cx="12" cy="12" r="2"/><circle class="f" cx="12" cy="19" r="2"/></svg></button></div>
   <div class="cv"><img id="fi" alt=""><div id="lyr" aria-live="polite"></div></div>
   <div id="ytw" aria-hidden="true"><div id="ytp"></div></div>
-  <div class="ti"><div><b id="ft">-</b><p id="fa">-</p></div><button class="ib" id="fl" aria-label="Lirik" aria-pressed="false"><svg class="ic" viewBox="0 0 24 24"><path d="M4 6h16M4 11h11M4 16h16M4 21h8"/></svg></button><button class="ib" id="fh" aria-label="Suka"></button></div>
+  <div class="ti"><div><b id="ft">-</b><p id="fa">-</p></div><button class="ib" id="fh" aria-label="Suka"></button></div>
   <div class="pr"><span id="tc">0:00</span><input type="range" id="sk" min="0" max="1000" value="0"><span id="td">0:00</span></div>
   <div class="ct">
    <button id="bsh" aria-label="Acak"><svg class="ic" viewBox="0 0 24 24"><path d="M3 6h3c4 0 5 12 9 12h6M3 18h3c1.500 0 2.600-1.500 3.600-3.500M15 6h6M18 3l3 3-3 3M18 15l3 3-3 3"/></svg></button>
@@ -1191,16 +1194,27 @@ ui();restartBanner();loadTrend();
  });
  function setOpen(v){
   open=v;fp.classList.toggle('ly',v);btn.classList.toggle('on',v);
-  btn.setAttribute('aria-pressed',v?'true':'false');
+  btn.setAttribute('aria-selected',v?'true':'false');const sm=$('#fs');if(sm){sm.classList.toggle('on',!v);sm.setAttribute('aria-selected',v?'false':'true')}
   if(v){if(!S.cur){msg('Putar lagu dulu untuk melihat lirik');return}if(key!==S.cur.id||!data&&!cache.has(S.cur.id))load();else tick(true)}
  }
- btn.onclick=()=>setOpen(!open);
+ btn.onclick=()=>setOpen(true);const sm0=$('#fs');if(sm0)sm0.onclick=()=>setOpen(false);
  /* ganti lagu saat panel lirik terbuka */
  setInterval(()=>{
   if(!open)return;
   const t=S.cur;if(!t){return}
   if(key!==t.id){data=null;load()}else tick(false);
  },300);
+})();
+
+/* ===== Menu titik tiga di pemutar ===== */
+(function(){
+ const fm=$('#fm'),sh=$('#sheet'),app=$('#app');
+ if(!fm||!sh||!app)return;
+ fm.onclick=()=>{
+  if(!S.cur){toast('Putar lagu dulu');return}
+  L.cur=[S.cur];app.classList.add('fpm');trackMenu('cur',0);
+ };
+ try{new MutationObserver(()=>{if(!sh.classList.contains('o'))app.classList.remove('fpm')}).observe(sh,{attributes:true,attributeFilter:['class']})}catch(e){}
 })();
 </script>
 </body>
