@@ -192,6 +192,23 @@ input[type=range]::-moz-range-thumb{width:14px;height:14px;border:0;border-radiu
 .seg button{flex:1;padding:11px 0;border-radius:11px;font-weight:700;font-size:14px;color:#aab3ad}
 .seg button.on{background:var(--g);color:#032a12}
 @media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+#fp .cv{min-height:0}
+#lyr{display:none;width:100%;height:100%;overflow-y:auto;text-align:center;scrollbar-width:none;-webkit-mask-image:linear-gradient(transparent,#000 12%,#000 88%,transparent);mask-image:linear-gradient(transparent,#000 12%,#000 88%,transparent)}
+#lyr::-webkit-scrollbar{display:none}
+#fp.ly #lyr{display:block}
+#fp.ly .cv img{display:none}
+#fp.ly .cv{display:block;padding:8px 0}
+#fl.on{color:var(--g)}
+.lw{padding:30% 4px}
+.lw p{font-size:23px;font-weight:800;line-height:1.35;margin:0 0 18px;color:#fff;letter-spacing:-.3px}
+.lw.sy p{color:#ffffff55;cursor:pointer;transition:color .25s,transform .25s;transform-origin:center}
+.lw.sy p.pa{color:#ffffff80}
+.lw.sy p.on{color:#fff;transform:scale(1.04)}
+.lw p.gap{margin:0 0 10px;font-size:10px}
+.lw small{display:block;margin-top:30px;font-size:12px;color:#ffffff66;font-weight:500}
+.lm{height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:0 24px;color:#c8d0ca;font-size:17px;line-height:1.5}
+.lm button{background:var(--g);color:#000;font-weight:700;padding:11px 24px;border-radius:30px}
 </style>
 </head>
 <body>
@@ -551,9 +568,9 @@ input[type=range]::-moz-range-thumb{width:14px;height:14px;border:0;border-radiu
  <div id="sheet"></div>
  <div id="fp">
   <div class="top"><button class="ib" id="fc" aria-label="Tutup"><svg class="ic" viewBox="0 0 24 24"><path d="m5 9 7 7 7-7"/></svg></button><span>Sedang diputar</span><span style="width:42px"></span></div>
-  <div class="cv"><img id="fi" alt=""></div>
+  <div class="cv"><img id="fi" alt=""><div id="lyr" aria-live="polite"></div></div>
   <div id="ytw" aria-hidden="true"><div id="ytp"></div></div>
-  <div class="ti"><div><b id="ft">-</b><p id="fa">-</p></div><button class="ib" id="fh" aria-label="Suka"></button></div>
+  <div class="ti"><div><b id="ft">-</b><p id="fa">-</p></div><button class="ib" id="fl" aria-label="Lirik" aria-pressed="false"><svg class="ic" viewBox="0 0 24 24"><path d="M4 6h16M4 11h11M4 16h16M4 21h8"/></svg></button><button class="ib" id="fh" aria-label="Suka"></button></div>
   <div class="pr"><span id="tc">0:00</span><input type="range" id="sk" min="0" max="1000" value="0"><span id="td">0:00</span></div>
   <div class="ct">
    <button id="bsh" aria-label="Acak"><svg class="ic" viewBox="0 0 24 24"><path d="M3 6h3c4 0 5 12 9 12h6M3 18h3c1.500 0 2.600-1.500 3.600-3.500M15 6h6M18 3l3 3-3 3M18 15l3 3-3 3"/></svg></button>
@@ -1035,6 +1052,155 @@ ui();restartBanner();loadTrend();
   else if(want&&au.paused&&!msPaused){au.play();kaPlay()}
  });
  window.addEventListener('pagehide',()=>{if(!au.paused)kaPlay()});
+})();
+
+/* ===== Anti macet saat ganti lagu ===== */
+(function(){
+ let wd1=null,wd2=null,uPause=false,tries=0,ok=false;
+ const clr=()=>{clearTimeout(wd1);clearTimeout(wd2)};
+ au.addEventListener('playing',()=>{clr();ok=true;uPause=false;tries=0});
+ au.addEventListener('pause',()=>{uPause=true});
+ au.addEventListener('error',clr);
+ startAudio=function(t){
+  const v=pickUrl(t);
+  clr();uPause=false;ok=false;clearTimeout(S.ht);
+  au.src=v;
+  /* playVideo tepat setelah loadVideoById kadang bikin macet, jadi hanya dipanggil jika pemutar sudah jalan sebelumnya */
+  ui();
+  wd1=setTimeout(()=>{
+   if(S.cur!==t||ok||au.fatal||uPause)return;
+   try{au.src=v;au.play()}catch(e){}
+   wd2=setTimeout(()=>{
+    if(S.cur!==t||ok||au.fatal||uPause)return;
+    if(S.q.length>1&&++tries<3){toast('Lagu macet, lanjut ke berikutnya');next()}
+    else{tries=0;toast('Lagu tidak mau mulai. Ketuk tombol putar')}
+   },6000);
+  },5000);
+ };
+})();
+
+/* ===== Lirik lagu ===== */
+(function(){
+ const btn=$('#fl'),box=$('#lyr'),fp=$('#fp');
+ if(!btn||!box||!fp)return;
+ const cache=new Map();
+ let open=false,key=null,data=null,idx=-1,seq=0,scrollAt=0,ctl=null;
+ const norm=s=>String(s||'').toLowerCase().replace(/[^a-z0-9\u00c0-\u024f ]+/g,' ').replace(/\s+/g,' ').trim();
+ function clean(t){
+  let ti=String(t.title||'').replace(/\[[^\]]*\]|\([^)]*\)|\{[^}]*\}|\u3010[^\u3011]*\u3011/g,' ');
+  ti=ti.replace(/\b(official|video|music|lyrics?|lirik|audio|mv|hd|4k|clip|visualizer|full album|live)\b/gi,' ').replace(/\b(ft|feat|featuring)\b\.?.*$/i,' ').replace(/[|\u2022]+/g,' ').replace(/\s+/g,' ').trim();
+  let ar=String(t.artist||'').replace(/\s*-\s*Topic$/i,'').replace(/VEVO$/i,'').replace(/\b(official|music)\b/gi,'').trim(),tr=ti;
+  const m=ti.split(/\s[-\u2013\u2014]\s/);
+  if(m.length>=2){ar=m[0].trim();tr=m.slice(1).join(' ').trim()}
+  return{artist:ar,track:tr||ti||String(t.title||'')};
+ }
+ function parse(txt){
+  const out=[];
+  String(txt||'').split(/\r?\n/).forEach(l=>{
+   const re=/\[(\d+):(\d+(?:\.\d+)?)\]/g,tm=[];let m,last=0;
+   while((m=re.exec(l))){tm.push(+m[1]*60+ +m[2]);last=re.lastIndex}
+   const text=l.slice(last).trim();
+   if(tm.length&&text)tm.forEach(x=>out.push({t:x,text}));
+  });
+  return out.sort((a,b)=>a.t-b.t);
+ }
+ async function getJson(url){
+  if(ctl)try{ctl.abort()}catch(e){}
+  ctl=new AbortController();const my=ctl,to=setTimeout(()=>{try{my.abort()}catch(e){}},9000);
+  try{const r=await fetch(url,{signal:my.signal});if(!r.ok)throw new Error('http '+r.status);return await r.json()}
+  finally{clearTimeout(to)}
+ }
+ async function find(t){
+  const c=clean(t),d=(t.dur||0);
+  const qs=[c.artist+' '+c.track,c.track];
+  const seen=new Set();let best=null,bs=-1e9;
+  for(const q of qs){
+   if(!q.trim()||seen.has(q))continue;seen.add(q);
+   const arr=await getJson('https://lrclib.net/api/search?q='+encodeURIComponent(q));
+   if(!Array.isArray(arr))continue;
+   for(const r of arr){
+    if(!r||(!r.syncedLyrics&&!r.plainLyrics)||r.instrumental)continue;
+    const am=norm(c.artist)&&(norm(r.artistName).includes(norm(c.artist))||norm(c.artist).includes(norm(r.artistName)));
+    const tm=norm(r.trackName).includes(norm(c.track))||norm(c.track).includes(norm(r.trackName));
+    const df=(d&&r.duration)?Math.abs(r.duration-d):0;
+    if(!tm)continue;
+    if(!am&&df>15)continue;
+    const sc=(r.syncedLyrics?2:0)+(am?3:0)+(tm?1:0)-df/10;
+    if(sc>bs){bs=sc;best=r}
+   }
+   if(best)break;
+  }
+  if(!best)return{none:true};
+  const lines=best.syncedLyrics?parse(best.syncedLyrics):[];
+  if(lines.length)return{synced:true,lines,title:best.trackName,artist:best.artistName};
+  const plain=String(best.plainLyrics||'').split(/\r?\n/).map(x=>x.trim());
+  return{synced:false,lines:plain,title:best.trackName,artist:best.artistName};
+ }
+ const msg=(h,btnTxt)=>{
+  box.innerHTML='';const d=document.createElement('div');d.className='lm';
+  const p=document.createElement('p');p.textContent=h;d.appendChild(p);
+  if(btnTxt){const b=document.createElement('button');b.textContent=btnTxt;b.onclick=()=>load(true);d.appendChild(b)}
+  box.appendChild(d);
+ };
+ function render(){
+  box.innerHTML='';idx=-1;
+  if(!data||!data.lines.length)return msg('Lirik belum tersedia untuk lagu ini');
+  const wrap=document.createElement('div');wrap.className='lw'+(data.synced?' sy':'');
+  data.lines.forEach(l=>{
+   const p=document.createElement('p');
+   if(data.synced){p.textContent=l.text;p.dataset.t=l.t}
+   else{if(!l){p.className='gap';p.innerHTML='&nbsp;'}else p.textContent=l}
+   wrap.appendChild(p);
+  });
+  const src=document.createElement('small');src.textContent='Sumber lirik: LRCLIB';wrap.appendChild(src);
+  box.appendChild(wrap);box.scrollTop=0;tick(true);
+ }
+ async function load(force){
+  const t=S.cur;if(!t){msg('Putar lagu dulu untuk melihat lirik');return}
+  const k=t.id;key=k;
+  if(!force&&cache.has(k)){data=cache.get(k);render();return}
+  const my=++seq;msg('Mencari lirik...');
+  try{
+   const r=await find(t);
+   if(my!==seq||S.cur!==t)return;
+   cache.set(k,r.none?null:r);data=r.none?null:r;render();
+  }catch(e){
+   try{console.warn('lirik:',e&&e.message||e)}catch(x){}
+   if(my!==seq||S.cur!==t)return;
+   msg('Lirik gagal dimuat. Periksa koneksi internetmu.','Coba lagi');
+  }
+ }
+ function tick(jump){
+  if(!open||!data||!data.synced)return;
+  const L=data.lines,cur=(au.currentTime||0)+0.3;
+  let lo=0,hi=L.length-1,r=-1;
+  while(lo<=hi){const m=(lo+hi)>>1;if(L[m].t<=cur){r=m;lo=m+1}else hi=m-1}
+  if(r===idx)return;idx=r;
+  const ps=box.querySelectorAll('.lw p[data-t]');
+  ps.forEach((p,i)=>{p.classList.toggle('on',i===r);p.classList.toggle('pa',i<r)});
+  const a=ps[r];
+  if(a&&(jump||Date.now()-scrollAt>3500)){
+   const y=a.offsetTop-box.clientHeight/2+a.offsetHeight/2;
+   try{box.scrollTo({top:Math.max(0,y),behavior:jump?'auto':'smooth'})}catch(e){box.scrollTop=Math.max(0,y)}
+  }
+ }
+ box.addEventListener('scroll',()=>{scrollAt=Date.now()},{passive:true});
+ box.addEventListener('click',e=>{
+  const p=e.target.closest('p[data-t]');
+  if(p&&data&&data.synced){try{au.currentTime=+p.dataset.t;scrollAt=0}catch(x){}}
+ });
+ function setOpen(v){
+  open=v;fp.classList.toggle('ly',v);btn.classList.toggle('on',v);
+  btn.setAttribute('aria-pressed',v?'true':'false');
+  if(v){if(!S.cur){msg('Putar lagu dulu untuk melihat lirik');return}if(key!==S.cur.id||!data&&!cache.has(S.cur.id))load();else tick(true)}
+ }
+ btn.onclick=()=>setOpen(!open);
+ /* ganti lagu saat panel lirik terbuka */
+ setInterval(()=>{
+  if(!open)return;
+  const t=S.cur;if(!t){return}
+  if(key!==t.id){data=null;load()}else tick(false);
+ },300);
 })();
 </script>
 </body>
