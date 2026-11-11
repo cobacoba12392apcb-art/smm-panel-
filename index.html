@@ -212,6 +212,30 @@ input[type=range]::-moz-range-thumb{width:14px;height:14px;border:0;border-radiu
 .lw small{display:block;margin-top:30px;font-size:12px;color:#ffffff66;font-weight:500}
 .lm{height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:0 24px;color:#c8d0ca;font-size:17px;line-height:1.5}
 .lm button{background:var(--g);color:#000;font-weight:700;padding:11px 24px;border-radius:30px}
+
+nav{grid-template-columns:repeat(5,1fr)}
+nav button{font-size:12px;padding-left:0;padding-right:0}
+nav svg{width:28px;height:28px}
+#app.yt #mini{display:none}
+.yh{font-size:26px;font-weight:800;letter-spacing:-.6px;margin:18px 0 6px}
+.ytsb{display:flex;align-items:center;gap:10px;background:#1a1d21;border-radius:14px;padding:0 14px;height:50px;margin:10px 0 14px}
+#yq{flex:1;min-width:0;background:none;border:0;outline:0;color:#fff;font:inherit;font-size:15px}
+#yq::placeholder{color:#8a948f}
+#yvw{position:sticky;top:0;z-index:6;background:var(--bg,#07090b);padding:4px 0 12px}
+#yvbox{position:relative;aspect-ratio:16/9;background:#000;border-radius:14px;overflow:hidden}
+#yvbox iframe,#yvp{position:absolute;inset:0;width:100%;height:100%;border:0}
+#yvph{position:absolute;inset:0;display:grid;place-items:center;color:#9aa4a0;font-size:15px;text-align:center;padding:20px;background:linear-gradient(135deg,#10161a,#0b0d10);pointer-events:none}
+#yvinfo b{display:block;font-size:17px;margin-top:12px;line-height:1.3}
+#yvinfo span{color:#9aa4a0;font-size:14px}
+.yc{display:flex;gap:14px;padding:10px 0;align-items:flex-start;width:100%;text-align:left;color:#fff}
+.yth{position:relative;width:46%;max-width:190px;aspect-ratio:16/9;border-radius:10px;overflow:hidden;background:#1d2227;flex:none}
+.yth img{width:100%;height:100%;object-fit:cover;display:block}
+.yth i{position:absolute;right:6px;bottom:6px;background:#000c;color:#fff;font-style:normal;font-size:12px;font-weight:700;padding:2px 6px;border-radius:5px}
+.yc b{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;font-size:15px;line-height:1.3;font-weight:600}
+.yc span{display:block;color:#9aa4a0;font-size:13px;margin-top:6px}
+.yc.on b{color:var(--g)}
+.ymsg{text-align:center;color:#aab3ae;padding:40px 10px;line-height:1.5;font-size:15px}
+.ymsg button{margin-top:14px;background:var(--g);color:#000;font-weight:700;padding:11px 24px;border-radius:30px}
 </style>
 </head>
 <body>
@@ -542,6 +566,12 @@ input[type=range]::-moz-range-thumb{width:14px;height:14px;border:0;border-radiu
   <section id="v-settings" hidden>
    <div class="bk"><h2>Pengaturan</h2></div><div id="st"></div>
   </section>
+  <section id="v-yt" hidden>
+   <h1 class="yh">YouTube</h1>
+   <div class="ytsb"><svg class="ic" viewBox="0 0 24 24" style="width:22px;height:22px;color:#9aa4a0"><circle cx="10.500" cy="10.500" r="7" fill="none" stroke="currentColor" stroke-width="2"/><path d="m16 16 5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><input id="yq" type="search" placeholder="Cari video di YouTube..." enterkeyhint="search" autocomplete="off"></div>
+   <div id="yvw"><div id="yvbox"><div id="yvp"></div><div id="yvph">Pilih video di bawah untuk mulai menonton</div></div><div id="yvinfo" hidden><b id="yvt"></b><span id="yvc"></span></div></div>
+   <div id="ylist"></div>
+  </section>
   <section id="v-premium" hidden>
    <div class="bk"><h2>Premium</h2></div>
    <div class="pl"><h3>Individual</h3><div class="pr2">Rp54.990 / bulan</div><p>Tanpa jeda iklan, kualitas audio tertinggi, dan putar offline.</p><button class="pbtn" data-p="Individual">Coba gratis 1 bulan</button></div>
@@ -564,6 +594,7 @@ input[type=range]::-moz-range-thumb{width:14px;height:14px;border:0;border-radiu
   <button data-v="home" class="on"><svg class="ic" viewBox="0 0 24 24"><path class="f" d="M12 3 2.500 11.500H5V20h5v-6h4v6h5v-8.500h2.500z"/></svg>Beranda</button>
   <button data-v="search"><svg class="ic" viewBox="0 0 24 24"><circle class="f" cx="12" cy="12" r="10"/><path d="m15.700 8.300-2 5.400-5.400 2 2-5.400z" fill="#0b0d10" stroke="#0b0d10" stroke-width="1"/></svg>Jelajah</button>
   <button data-v="koleksi"><svg class="ic" viewBox="0 0 24 24"><rect class="f" x="3" y="3" width="18" height="18" rx="4.500"/><path d="M10 17V9l5-1.500V15" stroke="#0b0d10" stroke-width="1.800" fill="none"/><circle cx="8.600" cy="17" r="1.700" fill="#0b0d10" stroke="none"/><circle cx="13.600" cy="15" r="1.700" fill="#0b0d10" stroke="none"/></svg>Perpustakaan</button>
+  <button data-v="yt"><svg class="ic" viewBox="0 0 24 24"><rect class="f" x="2" y="5" width="20" height="14" rx="4.500"/><path d="M10 9v6l5-3z" fill="#0b0d10"/></svg>YouTube</button>
   <button data-v="settings"><svg class="ic" viewBox="0 0 24 24"><g class="f"><rect x="10" y="1.500" width="4" height="21" rx="1"/><rect x="10" y="1.500" width="4" height="21" rx="1" transform="rotate(45 12 12)"/><rect x="10" y="1.500" width="4" height="21" rx="1" transform="rotate(90 12 12)"/><rect x="10" y="1.500" width="4" height="21" rx="1" transform="rotate(135 12 12)"/><circle cx="12" cy="12" r="7.500"/></g><circle cx="12" cy="12" r="3" fill="#0b0d10" stroke="none"/></svg>Pengaturan</button>
  </nav>
 
@@ -1215,6 +1246,94 @@ ui();restartBanner();loadTrend();
   L.cur=[S.cur];app.classList.add('fpm');trackMenu('cur',0);
  };
  try{new MutationObserver(()=>{if(!sh.classList.contains('o'))app.classList.remove('fpm')}).observe(sh,{attributes:true,attributeFilter:['class']})}catch(e){}
+})();
+
+/* ===== Menu YouTube (nonton video) ===== */
+(function(){
+ const sec=$('#v-yt'),app=$('#app');
+ if(!sec||!app)return;
+ const yq=$('#yq'),list=$('#ylist'),ph=$('#yvph'),info=$('#yvinfo'),yt=$('#yvt'),yc=$('#yvc');
+ let yv=null,ready=false,pend=null,cur=null,seq=0,first=true,lastQ='',dt=null;
+ const memo=new Map();
+ const fmt=s=>{s=Math.max(0,Math.floor(s||0));const h=Math.floor(s/3600),m=Math.floor(s%3600/60),r=s%60;return(h?h+':'+String(m).padStart(2,'0'):m)+':'+String(r).padStart(2,'0')};
+ function ensureYT(ok,bad){
+  if(window.YT&&window.YT.Player){ok();return}
+  if(!document.querySelector('script[src*="youtube.com/iframe_api"]')){
+   const s=document.createElement('script');s.src='https://www.youtube.com/iframe_api';
+   s.onerror=()=>bad();document.head.appendChild(s);
+  }
+  let n=0;const iv=setInterval(()=>{
+   if(window.YT&&window.YT.Player){clearInterval(iv);ok()}
+   else if(++n>60){clearInterval(iv);bad()}
+  },200);
+ }
+ const ERR={2:'ID video tidak valid',5:'Pemutar video error',100:'Video dihapus atau privat',101:'Pemilik melarang video ini disematkan',150:'Pemilik melarang video ini disematkan',153:'Buka aplikasi lewat https:// (bukan file lokal)'};
+ function makeYV(done){
+  if(yv){done();return}
+  ensureYT(()=>{
+   if(yv){done();return}
+   try{
+    yv=new YT.Player('yvp',{width:'100%',height:'100%',playerVars:{playsinline:1,rel:0,modestbranding:1,controls:1},events:{
+     onReady:()=>{ready=true;if(pend){const v=pend;pend=null;try{yv.loadVideoById(v)}catch(e){}}},
+     onStateChange:e=>{if(e&&e.data===1){ph.style.display='none';try{if(!au.paused)au.pause()}catch(x){}}},
+     onError:e=>{const c=e&&e.data;toast(ERR[c]||('Video tidak bisa diputar ('+c+')'))}
+    }});
+    done();
+   }catch(e){toast('Pemutar video gagal dibuat')}
+  },()=>toast('Pemutar YouTube gagal dimuat. Periksa koneksi internet.'));
+ }
+ function play(t){
+  cur=t;ph.style.display='none';info.hidden=false;yt.textContent=t.title;yc.textContent=t.artist;
+  list.querySelectorAll('.yc').forEach(b=>b.classList.toggle('on',b.dataset.vid===t.vid));
+  try{if(!au.paused)au.pause()}catch(e){}
+  makeYV(()=>{if(ready){try{yv.loadVideoById(t.vid)}catch(e){toast('Video gagal dimuat')}}else pend=t.vid});
+ }
+ function msg(h,retry){
+  list.innerHTML='';const d=document.createElement('div');d.className='ymsg';
+  const p=document.createElement('p');p.textContent=h;d.appendChild(p);
+  if(retry){const b=document.createElement('button');b.textContent='Coba lagi';b.onclick=()=>run(lastQ,true);d.appendChild(b)}
+  list.appendChild(d);
+ }
+ function render(arr){
+  list.innerHTML='';
+  if(!arr.length){msg('Video tidak ditemukan. Coba kata kunci lain.');return}
+  arr.forEach(t=>{
+   const b=document.createElement('button');b.className='yc'+(cur&&cur.vid===t.vid?' on':'');b.dataset.vid=t.vid;
+   const th=document.createElement('div');th.className='yth';
+   const im=document.createElement('img');im.loading='lazy';im.alt='';im.src=t.img;th.appendChild(im);
+   if(t.dur){const i=document.createElement('i');i.textContent=fmt(t.dur);th.appendChild(i)}
+   const w=document.createElement('div');w.style.minWidth='0';
+   const a=document.createElement('b');a.textContent=t.title;const c=document.createElement('span');c.textContent=t.artist;
+   w.appendChild(a);w.appendChild(c);b.appendChild(th);b.appendChild(w);
+   b.onclick=()=>play(t);list.appendChild(b);
+  });
+ }
+ async function run(q,force){
+  q=(q||'').trim()||'video populer indonesia';lastQ=q;
+  if(!force&&memo.has(q)){render(memo.get(q));return}
+  const my=++seq;msg('Mencari video...');
+  try{
+   const s=await ytGet('search','part=snippet&type=video&videoEmbeddable=true&maxResults=20&regionCode=ID&q='+encodeURIComponent(q));
+   const items=(s.items||[]).filter(i=>i.id&&i.id.videoId);
+   let info2={};
+   if(items.length){try{const v=await ytGet('videos','part=contentDetails,status&id='+items.map(i=>i.id.videoId).join(','));(v.items||[]).forEach(x=>{info2[x.id]=x})}catch(e){}}
+   if(my!==seq)return;
+   const arr=items.map(i=>mapYt(i,info2[i.id.videoId])).filter(Boolean);
+   memo.set(q,arr);render(arr);
+  }catch(e){if(my===seq)msg((e&&e.message)||'Gagal memuat video','retry')}
+ }
+ yq.addEventListener('input',()=>{clearTimeout(dt);dt=setTimeout(()=>run(yq.value),600)});
+ yq.addEventListener('keydown',e=>{if(e.key==='Enter'){clearTimeout(dt);run(yq.value);yq.blur()}});
+ /* musik mulai -> video berhenti */
+ au.addEventListener('play',()=>{try{if(yv&&ready&&yv.getPlayerState&&yv.getPlayerState()===1)yv.pauseVideo()}catch(e){}});
+ const _go=go;
+ go=function(v){
+  _go(v);
+  const on=v==='yt';
+  sec.hidden=!on;app.classList.toggle('yt',on);
+  if(on){if(first){first=false;run('')}}
+  else{try{if(yv&&ready&&yv.getPlayerState&&yv.getPlayerState()===1)yv.pauseVideo()}catch(e){}}
+ };
 })();
 </script>
 </body>
